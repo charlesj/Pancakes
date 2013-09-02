@@ -61,7 +61,7 @@ namespace Pancakes.Settings
 		/// <returns>
 		/// The <see cref="string"/>.
 		/// </returns>
-		private string GetValue(string key)
+		protected string GetValue(string key)
 		{
 			return ConfigurationManager.AppSettings[key];
 		}
@@ -78,7 +78,7 @@ namespace Pancakes.Settings
 		/// <returns>
 		/// The <see cref="TSettingsType"/>.
 		/// </returns>
-		private TSettingsType GetValue<TSettingsType>(string key)
+		protected TSettingsType GetValue<TSettingsType>(string key)
 		{
 			return this.typeConverter.Convert<TSettingsType>(this.GetValue(key));
 		}
