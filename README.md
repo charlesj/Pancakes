@@ -1,14 +1,14 @@
 #Pancakes
 
 
-Pancakes brings together well known .NET libraries into a cogent stack that can be used immediately.
+Pancakes brings together well known .NET libraries into a cogent stack that can be used immediately.  Things like logging, validation, and object mapping are wrapped into interfaces that can be injected into their relevant classes.
 
 ##.NET Libraries Used
 
 * **Ninject** - Dependency Injection / Inversion of Control Container
 * **AutoMapper** -- Object Mapping
 * **Fluent Validation** -- Object Validation
-* **NLog - Logging
+* **NLog** - Logging
 
 ##Pancakes Kernel
 The kernel is at the heart of a Pancakes application.  Calling Boot() sets things in motion, loading up all your settings, setting up the IoC container, setting up validatin, and optionally running a sanity check on it all.  If something isn't right, you find out then, not later on.

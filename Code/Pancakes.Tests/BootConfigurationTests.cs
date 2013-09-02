@@ -19,5 +19,12 @@
 		{
 			Assert.True(this.systemUnderTest.CheckSanity);
 		}
+
+		[Fact]
+		public void SkipSanityCheckSetsPropertyToFalse()
+		{
+			var configuration = this.systemUnderTest.SkipSanityCheck();
+			Assert.False(configuration.CheckSanity);
+		}
 	}
 }
