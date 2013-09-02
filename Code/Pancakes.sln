@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pancakes", "Pancakes\Pancakes.csproj", "{56C9D593-404C-4C54-94A4-061A7FC7C8EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pancakes.Tests", "Pancakes.Tests\Pancakes.Tests.csproj", "{CBE7B318-E2AB-46E3-819F-172D7CDE339F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A42A7703-AEF1-4270-9ED6-C648992FD3D5}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{ECD59FF6-AEEE-49AA-80BB-F0D90530BAA1}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56C9D593-404C-4C54-94A4-061A7FC7C8EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56C9D593-404C-4C54-94A4-061A7FC7C8EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56C9D593-404C-4C54-94A4-061A7FC7C8EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56C9D593-404C-4C54-94A4-061A7FC7C8EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBE7B318-E2AB-46E3-819F-172D7CDE339F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBE7B318-E2AB-46E3-819F-172D7CDE339F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBE7B318-E2AB-46E3-819F-172D7CDE339F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBE7B318-E2AB-46E3-819F-172D7CDE339F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
