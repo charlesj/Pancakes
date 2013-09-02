@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SettingsBase.cs" company="Josh Charles">
+// <copyright file="Settings.cs" company="Josh Charles">
 //   Copyright (c) 2013 Josh Charles.  Released under the MIT license.
 // </copyright>
 // <summary>
@@ -17,23 +17,35 @@ namespace Pancakes.Settings
 	/// <summary>
 	/// The settings base creates a basis for using ApplicationSettings.
 	/// </summary>
-	public class SettingsBase
+	public class Settings : ISettings
 	{
 		/// <summary>
-		/// The type converter.
-		/// </summary>
-		private readonly ITypeConverter typeConverter;
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SettingsBase"/> class.
+		/// Initializes a new instance of the <see cref="Settings"/> class.
 		/// </summary>
 		/// <param name="typeConverter">
 		/// The type converter.
 		/// </param>
-		public SettingsBase(ITypeConverter typeConverter)
+		public Settings(ITypeConverter typeConverter)
 		{
-			this.typeConverter = typeConverter;
+			this.TypeConverter = typeConverter;
+			this.ApplicationName = this.GetValue("ApplicationName");
+			this.ApplicationInstance = this.GetValue("ApplicationInstance");
 		}
+
+		/// <summary>
+		/// Gets or sets the application name.
+		/// </summary>
+		public string ApplicationName { get; protected set; }
+
+		/// <summary>
+		/// Gets or sets the application instance.  Examples "Development", "Local", "Production".
+		/// </summary>
+		public string ApplicationInstance { get; protected set; }
+
+		/// <summary>
+		/// Gets the type converter.
+		/// </summary>
+		protected ITypeConverter TypeConverter { get; private set; }
 
 		/// <summary>
 		/// The check all setting for values.
@@ -63,7 +75,14 @@ namespace Pancakes.Settings
 		/// </returns>
 		protected string GetValue(string key)
 		{
-			return ConfigurationManager.AppSettings[key];
+			var value = ConfigurationManager.AppSettings[key];
+			if (string.IsNullOrEmpty(value))
+			{
+				string message = string.Format("Missing Settings Value: {0}", key);
+				throw new PancakeException(message);
+			}
+
+			return value;
 		}
 
 		/// <summary>
@@ -80,7 +99,7 @@ namespace Pancakes.Settings
 		/// </returns>
 		protected TSettingsType GetValue<TSettingsType>(string key)
 		{
-			return this.typeConverter.Convert<TSettingsType>(this.GetValue(key));
+			return this.TypeConverter.Convert<TSettingsType>(this.GetValue(key));
 		}
 	}
 }

@@ -28,7 +28,7 @@ namespace Pancakes.Exceptions
 		/// <param name="additionalData">
 		/// The additional data.
 		/// </param>
-		public PancakeException(string message, Exception innerException, object additionalData) : base(message, innerException)
+		public PancakeException(string message, Exception innerException, object additionalData = null) : base(message, innerException)
 		{
 			this.AdditionalData = additionalData;
 		}
@@ -42,7 +42,7 @@ namespace Pancakes.Exceptions
 		/// <param name="additionalData">
 		/// Additional data can be used to wrap up any relevant information that you wish to include.
 		/// </param>
-		public PancakeException(string message, object additionalData): base(message)
+		public PancakeException(string message, object additionalData = null) : base(message)
 		{
 			this.AdditionalData = additionalData;
 		}
