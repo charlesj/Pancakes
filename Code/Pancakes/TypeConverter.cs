@@ -1,4 +1,13 @@
-﻿namespace Pancakes
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="TypeConverter.cs" company="Josh Charles">
+//   Copyright (c) 2013 Josh Charles.  Released under the MIT license.
+// </copyright>
+// <summary>
+//   The type converter is used to genericly convert an object from one type to another.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace Pancakes
 {
 	using System;
 	using System.ComponentModel;
