@@ -23,5 +23,10 @@ namespace Pancakes.Settings
 		/// Gets the application instance.  Examples "Development", "Local", "Production".
 		/// </summary>
 		string ApplicationInstance { get; }
+
+		/// <summary>
+		/// The check all setting for values.
+		/// </summary>
+		void CheckAllSettingForValues();
 	}
 }

@@ -11,9 +11,12 @@
 namespace Pancakes
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Linq;
 
 	using Pancakes.Exceptions;
 	using Pancakes.ServiceLocater;
+	using Pancakes.Settings;
 
 	/// <summary>
 	/// The bootstrapper is the entry point for applications written with Pancakes.  Calling Boot() with the boot configuration gets everything 
@@ -44,6 +47,11 @@ namespace Pancakes
 
 			this.ServiceLocater = new NinjectServiceLocater();
 
+			if (this.configuration.CheckSanity)
+			{
+				this.CheckSanity();
+			}
+			
 			this.WriteIfVerbose("Boot Complete.");
 		}
 
@@ -94,7 +102,29 @@ namespace Pancakes
 		public void CheckSanity()
 		{
 			this.WriteIfVerbose("Checking Sanity");
+			this.CheckSanityOfSettingsObjects();
 			this.WriteIfVerbose("Hey it's sane!");
+		}
+
+		/// <summary>
+		/// Checks the sanity of Settings objects by loading them via the service locater and calling CheckAllSettingForValues().
+		/// </summary>
+		private void CheckSanityOfSettingsObjects()
+		{
+			var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+			var settingsInterfaces = new List<Type>();
+			foreach (var assembly in assemblies)
+			{
+				settingsInterfaces.AddRange(assembly.GetTypes().Where(type => type.IsInterface && type.IsAssignableFrom(typeof(ISettings))));
+			}
+
+			foreach (var settingsInterface in settingsInterfaces)
+			{
+				var settings = (ISettings)this.ServiceLocater.GetService(settingsInterface);
+				settings.CheckAllSettingForValues();
+			}
+
+			this.WriteIfVerbose("Settings implementations seem to be sane.");
 		}
 
 		/// <summary>

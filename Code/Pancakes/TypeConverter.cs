@@ -37,8 +37,6 @@ namespace Pancakes
 		public object Convert(object value, Type targetType)
 		{
 			var converter = TypeDescriptor.GetConverter(targetType);
-			Console.WriteLine("Is Valid {0}", converter.IsValid(value));
-			Console.WriteLine("Can Convert From {0}", converter.CanConvertFrom(value.GetType()));
 			if (!converter.IsValid(value) || !converter.CanConvertFrom(value.GetType()))
 			{
 				throw new PancakeException("Attempted to convert to a type that was not valid.", new { targetType, value });

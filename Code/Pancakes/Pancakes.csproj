@@ -50,6 +50,7 @@
     <Compile Include="Exceptions\PancakeException.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="ITypeConverter.cs" />
+    <Compile Include="PancakesNinjectModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLocater\IServiceLocater.cs" />
     <Compile Include="ServiceLocater\NinjectServiceLocater.cs" />

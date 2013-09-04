@@ -12,6 +12,8 @@ namespace Pancakes.Tests
 	using System;
 	using System.Diagnostics.CodeAnalysis;
 
+	using Pancakes.Exceptions;
+
 	using Xunit;
 	using Xunit.Extensions;
 
@@ -32,6 +34,12 @@ namespace Pancakes.Tests
 		public void CanConvertWithoutThrowing(object source, Type target)
 		{
 			Assert.DoesNotThrow(() => this.typeConverter.Convert(source, target));
+		}
+
+		[Fact]
+		public void ThrowsOnInvalidConversion()
+		{
+			Assert.Throws<PancakeException>(() => this.typeConverter.Convert<int>("Hello"));
 		}
 	}
 }
