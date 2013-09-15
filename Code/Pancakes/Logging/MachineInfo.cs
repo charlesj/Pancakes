@@ -1,5 +1,4 @@
-﻿
-namespace Pancakes.Logging
+﻿namespace Pancakes.Logging
 {
     /// <summary>
     /// The machine info.

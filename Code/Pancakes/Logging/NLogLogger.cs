@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NLogLogger.cs" company="Josh Charles">
-//   Copyright (c) 2013 Josh Charles.  Released under the MIT license.
-// </copyright>
-// <summary>
-//   The implementation of ILogger using NLog.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Pancakes.Logging
+﻿namespace Pancakes.Logging
 {
     using NLog;
 

@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BaseValidator.cs" company="ECS">
-//   EMT
-// </copyright>
-// <summary>
-//   The base validator.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Pancakes.Validation
+﻿namespace Pancakes.Validation
 {
     using FluentValidation;
     using FluentValidation.Results;

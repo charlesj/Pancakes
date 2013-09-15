@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITypeConverter.cs" company="Josh Charles">
-//   Copyright (c) 2013 Josh Charles.  Released under the MIT license.
-// </copyright>
-// <summary>
-//   The TypeConvertor interface defines a generic way to do type conversion.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Pancakes
+﻿namespace Pancakes
 {
 	using System;
 

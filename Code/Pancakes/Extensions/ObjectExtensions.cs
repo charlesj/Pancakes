@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ObjectExtensions.cs" company="Josh Charles">
-//   Copyright (c) 2013 Josh Charles.  Released under the MIT license.
-// </copyright>
-// <summary>
-//   The object extensions contains useful extensions on objects.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Pancakes.Extensions
+﻿namespace Pancakes.Extensions
 {
 	using System.Reflection;
 

@@ -1,15 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ILogger.cs" company="Josh Charles">
-//   Copyright (c) 2013 Josh Charles.  Released under the MIT license.
-// </copyright>
-// <summary>
-//   The Logging Interface.  It defines 7 different levels of log messages.  It takes two parameters.  The first is
-//   message, which should be a short description that is constant for every call to the log.  Any information
-//   that changes per call should be passed in via the object metadata.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Pancakes.Logging
+﻿namespace Pancakes.Logging
 {
     /// <summary>
     /// The Logging Interface.  It defines 7 different levels of log messages.  It takes two parameters.  The first is 

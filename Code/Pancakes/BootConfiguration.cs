@@ -1,14 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BootConfiguration.cs" company="Josh Charles">
-//   Copyright (c) 2013 Josh Charles.  Released under the MIT license.
-// </copyright>
-// <summary>
-//   The boot configuration handles the configuration for Pancakes.  It has a fluent interface that you can use to define
-//   the configuration you wish, with sane defaults.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Pancakes
+﻿namespace Pancakes
 {
 	using System.Collections.Generic;
 

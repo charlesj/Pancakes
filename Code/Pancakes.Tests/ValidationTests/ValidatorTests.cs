@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ValidatorTests.cs" company="Josh Charles">
-//   Copyright (c) 2013 Josh Charles.  Released under the MIT license.
-// </copyright>
-// <summary>
-//   Defines the ValidatorTests type.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Pancakes.Tests.ValidationTests
+﻿namespace Pancakes.Tests.ValidationTests
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;

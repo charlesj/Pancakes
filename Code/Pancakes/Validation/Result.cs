@@ -1,5 +1,4 @@
-﻿
-namespace Pancakes.Validation
+﻿namespace Pancakes.Validation
 {
     using System.Collections.Generic;
 

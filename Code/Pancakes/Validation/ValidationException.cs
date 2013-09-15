@@ -1,14 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ValidationException.cs" company="Josh Charles">
-//   Copyright (c) 2013 Josh Charles.  Released under the MIT license.
-// </copyright>
-// <summary>
-//   The validation exception.  This exception is meant to be thrown when an object is encountered
-//   that should be valid at that point, but is not.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Pancakes.Validation
+﻿namespace Pancakes.Validation
 {
     using System;
     using System.Collections.Generic;
