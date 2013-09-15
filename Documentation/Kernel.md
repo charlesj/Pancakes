@@ -18,13 +18,15 @@ The Default configuration will do several things:
 The Boot Configuration can be adjusted in a variety of ways using a fluent interface.
 
 * SkipSanityCheck() - The Sanity Check is relatively expensive and you can skip it by calling
+```
+Kernel.Boot(BootConfiguration.DefaultConfiguration.SkipSanityCheck());
+```
 
-    Kernel.Boot(BootConfiguration.DefaultConfiguration.SkipSanityCheck());
-
- * AddAssemblySearchPattern() - By Default, Pancakes loads up all available ninject modules in all available assemblies.  Sometimes, though, this can go wrong, because the search tries to load a module that has already been loaded.  This can be fixed by passing in assembly search patterns.  An Example would be: "YourApplication.dll".
-
-     Kernel.Boot(BootConfiguration.DefaultConfiguration.AddAssemblySearchPattern("YourApplication.dll"));
-
- * Be Verbose() - Writes messages to standard out during the boot process.
-
-     Kernel.Boot(BootConfiguration.DefaultConfiguration.BeVerbose());
+* AddAssemblySearchPattern() - By Default, Pancakes loads up all available ninject modules in all available assemblies.  Sometimes, though, this can go wrong, because the search tries to load a module that has already been loaded.  This can be fixed by passing in assembly search patterns.  An Example would be: "YourApplication.dll".
+```
+Kernel.Boot(BootConfiguration.DefaultConfiguration.AddAssemblySearchPattern("YourApplication.dll"));
+```
+* Be Verbose() - Writes messages to standard out during the boot process.
+```
+Kernel.Boot(BootConfiguration.DefaultConfiguration.BeVerbose());
+```
