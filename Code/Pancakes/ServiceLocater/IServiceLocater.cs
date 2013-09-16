@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IServiceLocater.cs" company="Josh Charles">
-//   Copyright (c) 2013 Josh Charles.  Released under the MIT license.
-// </copyright>
-// <summary>
-//   Defines a basic service locater.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Pancakes.ServiceLocater
+﻿namespace Pancakes.ServiceLocater
 {
 	using System;
 

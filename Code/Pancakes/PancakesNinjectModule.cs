@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PancakesNinjectModule.cs" company="Josh Charles">
-//   Copyright (c) 2013 Josh Charles.  Released under the MIT license.
-// </copyright>
-// <summary>
-//   The pancakes ninject module.  Contains the bindings for the internal interfaces.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Pancakes
+﻿namespace Pancakes
 {
 	using Ninject.Modules;
 

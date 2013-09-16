@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SettingsTests.cs" company="Josh Charles">
-//   Copyright (c) 2013 Josh Charles.  Released under the MIT license.
-// </copyright>
-// <summary>
-//   Defines the SettingsTests type.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace Pancakes.Tests.SettingsTests
+﻿namespace Pancakes.Tests.SettingsTests
 {
 	using System;
 	using System.Diagnostics.CodeAnalysis;
