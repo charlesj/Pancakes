@@ -52,6 +52,8 @@
     <Compile Include="ITypeConverter.cs" />
     <Compile Include="PancakesNinjectModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SanityCheckers\ICheckKernelSanity.cs" />
+    <Compile Include="SanityCheckers\SettingsSanityCheck.cs" />
     <Compile Include="ServiceLocater\IServiceLocater.cs" />
     <Compile Include="ServiceLocater\NinjectServiceLocater.cs" />
     <Compile Include="Settings\ISettings.cs" />
