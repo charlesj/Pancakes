@@ -60,6 +60,7 @@
     <Compile Include="BootConfiguration.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
+    <Compile Include="IKernel.cs" />
     <Compile Include="Kernel.cs" />
     <Compile Include="Exceptions\PancakeException.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />

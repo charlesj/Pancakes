@@ -9,7 +9,7 @@
 	/// The bootstrapper is the entry point for applications written with Pancakes.  Calling Boot() with the boot configuration gets everything 
 	/// configured and ready to go.
 	/// </summary>
-	public class Kernel
+	public class Kernel : IKernel
 	{
 		/// <summary>
 		/// The booted kernel available after boot() is called.
