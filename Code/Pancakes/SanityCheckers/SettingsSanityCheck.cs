@@ -28,7 +28,7 @@ namespace Pancakes.SanityCheckers
 		/// <param name="kernel">
 		/// The kernel.
 		/// </param>
-		public void Check(Kernel kernel)
+		public void Check(IKernel kernel)
 		{
 			var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 			var settingsInterfaces = new List<Type>();

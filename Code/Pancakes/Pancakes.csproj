@@ -41,6 +41,9 @@
     <Reference Include="FluentValidation">
       <HintPath>..\packages\FluentValidation.4.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
@@ -94,7 +97,9 @@
     <Compile Include="Validation\ValidationException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="nuspec-packager.config" />
     <None Include="packages.config" />
+    <None Include="Pancakes.nuspec" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

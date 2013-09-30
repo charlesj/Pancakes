@@ -20,6 +20,6 @@ namespace Pancakes.SanityCheckers
 		/// <param name="kernel">
 		/// The kernel.
 		/// </param>
-		void Check(Kernel kernel);
+		void Check(IKernel kernel);
 	}
 }
