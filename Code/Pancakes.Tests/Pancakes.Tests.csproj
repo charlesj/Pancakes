@@ -67,7 +67,6 @@
     <Compile Include="MappingTests\MappingServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsTests\SettingsTests.cs" />
-    <Compile Include="StaticBootTests.cs" />
     <Compile Include="TypeConverterTests.cs" />
     <Compile Include="ValidationTests\ValidateThingsTests.cs" />
     <Compile Include="ValidationTests\ValidatorTests.cs" />

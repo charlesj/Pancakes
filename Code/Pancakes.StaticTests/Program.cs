@@ -19,18 +19,19 @@
 		public static void Main()
 		{
 			// TryingToAccessBootedKernelBeforeBootThrowsException
-			Assert.Throws<PancakeException>(() => Pancakes.Kernel.BootedKernel);
+			Assert.Throws<PancakeException>(() => Bootstrapper.BootedKernel);
+			
 			Console.WriteLine("Exception was properly thrown");
 
 			// CanAccessKernelAfterBooting 
-			Kernel.Boot(BootConfiguration.DefaultConfiguration);
+			Bootstrapper.Boot(BootConfiguration.DefaultConfiguration);
 			IKernel booted = new TestingKernel();
-			Assert.DoesNotThrow(() => booted = Kernel.BootedKernel);
+			Assert.DoesNotThrow(() => booted = Bootstrapper.BootedKernel);
 			Console.WriteLine("Can boot using default configuration and access booted kernel.");
 
 			// BootIsIdempotent
-			Kernel.Boot(BootConfiguration.DefaultConfiguration);
-			var secondKernel = Kernel.BootedKernel;
+			Bootstrapper.Boot(BootConfiguration.DefaultConfiguration);
+			var secondKernel = Bootstrapper.BootedKernel;
 
 			Assert.Equal(booted, secondKernel);
 

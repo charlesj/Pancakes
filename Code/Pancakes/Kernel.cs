@@ -2,7 +2,6 @@
 {
 	using System;
 
-	using Pancakes.Exceptions;
 	using Pancakes.ServiceLocater;
 
 	/// <summary>
@@ -11,11 +10,6 @@
 	/// </summary>
 	public class Kernel : IKernel
 	{
-		/// <summary>
-		/// The booted kernel available after boot() is called.
-		/// </summary>
-		private static Kernel bootedKernel;
-
 		/// <summary>
 		/// The configuration that was set at startup.
 		/// </summary>
@@ -43,45 +37,9 @@
 		}
 
 		/// <summary>
-		/// Gets the booted kernel.  Only accessible after Boot() is called.
-		/// </summary>
-		public static Kernel BootedKernel
-		{
-			get
-			{
-				if (bootedKernel == null)
-				{
-					throw new PancakeException("You cannot access the pancake kernel without first booting it.");
-				}
-
-				return bootedKernel;
-			}
-
-			private set
-			{
-				bootedKernel = value;
-			}
-		}
-
-		/// <summary>
 		/// Gets the service locater.
 		/// </summary>
 		public IServiceLocater ServiceLocater { get; private set; }
-	
-		/// <summary>
-		/// Boots up the stack.
-		/// </summary>
-		/// <param name="configuration">
-		/// The configuration.
-		/// </param>
-		public static void Boot(BootConfiguration configuration)
-		{
-			if (bootedKernel == null)
-			{
-				var kernel = new Kernel(configuration);
-				BootedKernel = kernel;
-			}
-		}
 
 		/// <summary>
 		/// Conducts a sanity check on the booted result.

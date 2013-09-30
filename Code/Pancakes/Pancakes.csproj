@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BootConfiguration.cs" />
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="IKernel.cs" />
