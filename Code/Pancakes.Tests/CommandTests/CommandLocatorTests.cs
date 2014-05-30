@@ -3,6 +3,7 @@
     using System.Diagnostics.CodeAnalysis;
 
     using Pancakes.Commands;
+    using Pancakes.ServiceLocater;
 
     using Xunit;
 
@@ -12,14 +13,14 @@
         [Fact]
         public void CanInstantiate()
         {
-            var locator = new CommandLocator();
+            var locator = new CommandLocator(new NinjectServiceLocater());
             Assert.NotNull(locator);
         }
 
         [Fact]
         public void ThrowsCommandNotFoundExceptionIfCannotFind()
         {
-            var locator = new CommandLocator();
+            var locator = new CommandLocator(new NinjectServiceLocater());
             Assert.Throws<CommandNotFoundException>(() => locator.LocateCommand<string, string>());
         }
     }
