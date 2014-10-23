@@ -42,7 +42,7 @@
 		[SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
 		internal class TestingKernel : IKernel
 		{
-			public IServiceLocater ServiceLocater { get; private set; }
+			public IServiceLocater ServiceLocator { get; private set; }
 
 			public void CheckSanity()
 			{

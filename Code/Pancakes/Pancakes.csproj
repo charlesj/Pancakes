@@ -68,10 +68,13 @@
   <ItemGroup>
     <Compile Include="BootConfiguration.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Commands\BaseCommand.cs" />
     <Compile Include="Commands\CommandLocator.cs" />
-    <Compile Include="Commands\CommandNotFoundException.cs" />
-    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\Headquarters.cs" />
     <Compile Include="Commands\ICommandLocator.cs" />
+    <Compile Include="Commands\Request.cs" />
+    <Compile Include="Commands\Response.cs" />
+    <Compile Include="Commands\ResponseTypes.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="IKernel.cs" />
@@ -92,7 +95,7 @@
     <Compile Include="SanityCheckers\ICheckKernelSanity.cs" />
     <Compile Include="SanityCheckers\SettingsSanityCheck.cs" />
     <Compile Include="ServiceLocater\IServiceLocater.cs" />
-    <Compile Include="ServiceLocater\NinjectServiceLocater.cs" />
+    <Compile Include="ServiceLocater\NinjectServiceLocator.cs" />
     <Compile Include="Settings\ISettings.cs" />
     <Compile Include="Settings\ReflectiveSettings.cs" />
     <Compile Include="Settings\Settings.cs" />

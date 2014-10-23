@@ -8,7 +8,7 @@
 	/// <summary>
 	/// Implementation of the service lcoater using Ninject, with some configuration options.
 	/// </summary>
-	public class NinjectServiceLocater : IServiceLocater
+	public class NinjectServiceLocator : IServiceLocater
 	{
 		/// <summary>
 		/// The kernel.
@@ -16,12 +16,12 @@
 		private readonly IKernel kernel;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="NinjectServiceLocater"/> class.
+		/// Initializes a new instance of the <see cref="NinjectServiceLocator"/> class.
 		/// </summary>
 		/// <param name="assemblySearchPatterns">
 		/// The assembly search patterns are used to search for ninject modules.  If no patterns are passed, all .dlls' are searched.
 		/// </param>
-		public NinjectServiceLocater(params string[] assemblySearchPatterns)
+		public NinjectServiceLocator(params string[] assemblySearchPatterns)
 		{
 			this.kernel = new StandardKernel();
 			if (assemblySearchPatterns.Any())

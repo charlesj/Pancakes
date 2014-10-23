@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BootConfigurationTests.cs" />
-    <Compile Include="CommandTests\CommandLocatorTests.cs" />
+    <Compile Include="CommandTests\AddCommandTests.cs" />
     <Compile Include="KernelTests.cs" />
     <Compile Include="MappingTests\MappingServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

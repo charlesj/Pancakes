@@ -90,7 +90,7 @@
 					{
 						// TODO: Use service locator for this.
 						var validator = Activator.CreateInstance(type, new object[] { this.mappingService }) as IValidate<T>;
-						//var validator = Kernel.BootedKernel.ServiceLocater.GetService<IValidate<T>>();
+						//var validator = Kernel.BootedKernel.ServiceLocator.GetService<IValidate<T>>();
 						return validator;
 					}
 					catch (Exception e)

@@ -10,7 +10,7 @@
 		/// <summary>
 		/// Gets the service locater.
 		/// </summary>
-		IServiceLocater ServiceLocater { get; }
+		IServiceLocater ServiceLocator { get; }
 
 		/// <summary>
 		/// Conducts a sanity check on the booted result.

@@ -1,52 +1,41 @@
 ﻿namespace Pancakes.Commands
 {
-    using System;
+	using System;
 
-    using Pancakes.ServiceLocater;
+	using Pancakes;
+	using Pancakes.Exceptions;
 
-    /// <summary>
-    /// The command locator.
-    /// </summary>
-    public class CommandLocator : ICommandLocator
-    {
-        /// <summary>
-        /// The service locater.
-        /// </summary>
-        private readonly IServiceLocater serviceLocater;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CommandLocator"/> class.
-        /// </summary>
-        /// <param name="serviceLocater">
-        /// The service locater.
-        /// </param>
-        public CommandLocator(IServiceLocater serviceLocater)
-        {
-            this.serviceLocater = serviceLocater;
-        }
-
-        /// <summary>
-        /// The locate command.
-        /// </summary>
-        /// <typeparam name="TRequest">
-        /// The type of the request.
-        /// </typeparam>
-        /// <typeparam name="TResponse">
-        /// The type of the response.
-        /// </typeparam>
-        /// <returns>
-        /// The <see cref="ICommand"/>.
-        /// </returns>
-        public ICommand<TRequest, TResponse> LocateCommand<TRequest, TResponse>()
-        {
-            try
-            {
-                return this.serviceLocater.GetService<ICommand<TRequest, TResponse>>();
-            }
-            catch (Exception)
-            {
-                throw new CommandNotFoundException(new[] { typeof(TResponse), typeof(TRequest) });
-            }
-        }
-    }
+	/// <summary>
+	/// The command locator.
+	/// </summary>
+	public class CommandLocator : ICommandLocator
+	{
+		/// <summary>
+		/// The find command.
+		/// </summary>
+		/// <typeparam name="TRequest">
+		/// The Type of the Request
+		/// </typeparam>
+		/// <typeparam name="TResult">
+		/// The Type of the Result
+		/// </typeparam>
+		/// <returns>
+		/// The <see cref="BaseCommand"/>.
+		/// </returns>
+		/// <exception cref="ArchimedesException">
+		/// If there is a problem, it won't solve it.
+		/// </exception>
+		public BaseCommand<TRequest, TResult> FindCommand<TRequest, TResult>() where TRequest : Request
+		{
+			try
+			{
+				var command = Bootstrapper.BootedKernel.ServiceLocator.GetService<BaseCommand<TRequest, TResult>>();
+				return command;
+			}
+			catch (Exception exception)
+			{
+				throw new PancakeException("Could not find command.  You might not have booted, or the service locator could not find the command (missing bindings).", exception);
+			}
+		}
+	}
 }

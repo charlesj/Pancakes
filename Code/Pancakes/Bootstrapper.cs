@@ -1,6 +1,7 @@
 ﻿namespace Pancakes
 {
 	using Pancakes.Exceptions;
+	using Pancakes.Mapping;
 
 	/// <summary>
 	/// The bootstrapper.
@@ -56,6 +57,7 @@
 			{
 				var kernel = new Kernel(configuration);
 				BootedKernel = kernel;
+				MappingConfigurationLoader.LoadConfigurations();
 			}
 		}
 	}

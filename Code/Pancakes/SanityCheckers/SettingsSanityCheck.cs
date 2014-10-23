@@ -39,7 +39,7 @@ namespace Pancakes.SanityCheckers
 
 			foreach (var settingsInterface in settingsInterfaces)
 			{
-				var settings = (ISettings)kernel.ServiceLocater.GetService(settingsInterface);
+				var settings = (ISettings)kernel.ServiceLocator.GetService(settingsInterface);
 				settings.CheckAllSettingForValues();
 			}
 
