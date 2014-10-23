@@ -1,6 +1,7 @@
-﻿namespace Archimedes.Common.Tests.CommandTests
+﻿namespace Pancakes.Tests.CommandTests
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using FluentValidation;
@@ -14,6 +15,7 @@
 
     using Xunit;
 
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed. Suppression is OK here.")]
     public class AddCommandTests
     {
         public AddCommandTests()
@@ -97,7 +99,7 @@
         public AddCommand(IValidateThings valdiator)
             : base(valdiator)
         {
-            AuthorizeOveride = true;
+            this.AuthorizeOveride = true;
         }
 
         protected override int Work()
@@ -123,8 +125,8 @@
         public AddRequestValidator(IMappingService mapper)
             : base(mapper)
         {
-            RuleFor(obj => obj.FirstNumber).GreaterThanOrEqualTo(0);
-            RuleFor(obj => obj.SecondNumber).LessThanOrEqualTo(100);
+            this.RuleFor(obj => obj.FirstNumber).GreaterThanOrEqualTo(0);
+            this.RuleFor(obj => obj.SecondNumber).LessThanOrEqualTo(100);
         }
     }
 }
