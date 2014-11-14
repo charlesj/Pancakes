@@ -1,5 +1,7 @@
 ﻿namespace Pancakes.Commands
 {
+	using System.Threading.Tasks;
+
 	public class Headquarters
 	{
 		private readonly ICommandLocator commandLocator;
@@ -9,10 +11,10 @@
 			this.commandLocator = commandLocator;
 		}
 
-		public Response<TResult> Execute<TRequest, TResult>(TRequest request) where TRequest : Request
+		public async Task<Response<TResult>> Execute<TRequest, TResult>(TRequest request) where TRequest : Request
 		{
 			var command = this.commandLocator.FindCommand<TRequest, TResult>();
-			return command.Execute(request);
+			return await command.Execute(request);
 		}
 	}
 }

@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using FluentValidation;
 
@@ -24,11 +25,11 @@
         }
 
         [Fact]
-        public void CanExecuteCommand()
+        public async Task CanExecuteCommand()
         {
             var command = Bootstrapper.BootedKernel.ServiceLocator.GetService<AddCommand>();
             var request = new AddRequest { FirstNumber = 1, SecondNumber = 1 };
-            var response = command.Execute(request);
+            var response = await command.Execute(request);
             Assert.True(response.Result == 2);
         }
 
@@ -41,46 +42,46 @@
         }
 
         [Fact]
-        public void CanUseHeadquarters()
+        public async Task CanUseHeadquarters()
         {
             var headquarters = Bootstrapper.BootedKernel.ServiceLocator.GetService<Headquarters>();
-            var response = headquarters.Execute<AddRequest, int>(new AddRequest { FirstNumber = 2, SecondNumber = 2 });
+            var response = await headquarters.Execute<AddRequest, int>(new AddRequest { FirstNumber = 2, SecondNumber = 2 });
             Assert.True(response.Result == 4);
         }
 
         [Fact]
-        public void CanReadElapsed()
+        public async Task CanReadElapsed()
         {
             var headquarters = Bootstrapper.BootedKernel.ServiceLocator.GetService<Headquarters>();
-            var response = headquarters.Execute<AddRequest, int>(new AddRequest { FirstNumber = 2, SecondNumber = 2 });
+            var response = await headquarters.Execute<AddRequest, int>(new AddRequest { FirstNumber = 2, SecondNumber = 2 });
             Console.Write("Execution Time: {0}ms", response.ExecutionTime);
         }
 
         [Fact]
-        public void InvalidRequestReturnsInvalidRequestTrue()
+        public async Task InvalidRequestReturnsInvalidRequestTrue()
         {
             var command = Bootstrapper.BootedKernel.ServiceLocator.GetService<AddCommand>();
             var request = new AddRequest { FirstNumber = -1, SecondNumber = 1 }; // invalid because of the -1
-            var response = command.Execute(request);
+            var response = await command.Execute(request);
             Assert.Equal(response.ResultType, ResponseTypes.InvalidRequest);
         }
 
         [Fact]
-        public void InvalidRequestReturnsValidationErrors()
+        public async Task InvalidRequestReturnsValidationErrors()
         {
             var command = Bootstrapper.BootedKernel.ServiceLocator.GetService<AddCommand>();
             var request = new AddRequest { FirstNumber = -1, SecondNumber = 1 }; // invalid because of the -1
-            var response = command.Execute(request);
+            var response = await command.Execute(request);
             Assert.True(response.ValidationErrors.Any());
         }
 
         [Fact]
-        public void UnauthorizedRequestReturnsUnauthorizedResponse()
+        public async Task UnauthorizedRequestReturnsUnauthorizedResponse()
         {
             var command = Bootstrapper.BootedKernel.ServiceLocator.GetService<AddCommand>();
             var request = new AddRequest { FirstNumber = 1, SecondNumber = 1 };
             command.AuthorizeOveride = false;
-            var response = command.Execute(request);
+            var response = await command.Execute(request);
             Assert.Equal(response.ResultType, ResponseTypes.Unauthorized);
         }
     }
@@ -102,7 +103,7 @@
             this.AuthorizeOveride = true;
         }
 
-        protected override int Work()
+        protected override async Task<int> Work()
         {
             return this.Request.FirstNumber + this.Request.SecondNumber;
         }

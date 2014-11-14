@@ -1,6 +1,7 @@
 ﻿namespace Pancakes.Commands
 {
 	using System;
+	using System.Threading.Tasks;
 
 	using Pancakes.Validation;
 
@@ -69,7 +70,7 @@
 		/// <returns>
 		/// The <see cref="TResponse"/>.
 		/// </returns>
-		public Response<TResult> Execute(TRequest request)
+		public async Task<Response<TResult>> Execute(TRequest request)
 		{
 			this.Request = request;
 			var response = new Response<TResult>();
@@ -82,7 +83,7 @@
 					var validationResult = this.valdiator.CheckValidation(request);
 					if (validationResult.IsValid)
 					{
-						response.SetResult(this.Work());
+						response.SetResult(await this.Work());
 						response.ResultType = ResponseTypes.Success;
 						response.Message = this.SuccessMessage;
 					}
@@ -116,7 +117,7 @@
 		/// <returns>
 		/// The <see cref="TResult"/>.
 		/// </returns>
-		protected abstract TResult Work();
+		protected abstract Task<TResult> Work();
 
 		/// <summary>
 		/// Runs any authorization check required.
