@@ -17,3 +17,7 @@ To do
 * User System
 * Authorization on top
 * CQRS 
+* Remove Service Locator wrapper - it's likely not needed
+* Object Mapper should not be automapper
+* Feature Flags
+* Error Codes
