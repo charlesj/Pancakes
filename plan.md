@@ -21,3 +21,8 @@ To do
 * Object Mapper should not be automapper
 * Feature Flags
 * Error Codes
+* EmberJS
+* Full Test Runs
+* CI of course
+* Ansible
+* How are services / tasks handled?
