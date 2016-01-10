@@ -1,4 +1,5 @@
-﻿using Pancakes.ErrorCodes;
+﻿using System;
+using Pancakes.ErrorCodes;
 using Pancakes.Exceptions;
 
 namespace Pancakes
@@ -11,7 +12,9 @@ namespace Pancakes
         {
         }
 
-        public bool BeVerbose { get; private set; }
+        public bool Verbose { get; private set; }
+
+        public Action<string> Output { get; private set; }
 
         public static BootConfiguration DefaultConfiguration
         {
@@ -23,10 +26,10 @@ namespace Pancakes
             this.hasBeenBooted = true;
         }
 
-        public BootConfiguration Verbose()
+        public BootConfiguration BeVerbose()
         {
             this.ProtectAgainstConfiguringAfterBoot();
-            this.BeVerbose = true;
+            this.Verbose = true;
             return this;
         }
 
@@ -34,6 +37,12 @@ namespace Pancakes
         {
             if (this.hasBeenBooted)
                 throw new ErrorCodeInvalidOperationException(CoreErrorCodes.CannotConfigurePostBoot);
+        }
+
+        public BootConfiguration WithOutput(Action<string> output)
+        {
+            this.Output = output;
+            return this;
         }
     }
 }
