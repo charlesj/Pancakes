@@ -1,5 +1,4 @@
 ﻿using System;
-using Newtonsoft.Json;
 using Pancakes.ServiceLocator;
 using Pancakes.Utility;
 
@@ -35,14 +34,13 @@ namespace Pancakes.Commands
 
                 var commandType = this.commandRegistry.Locate(commandName);
                 var command = (ICommand) this.serviceLocator.GetService(commandType);
-
+                this.commandSerializer.DeserializeInto(serialization, command);
+                return this.commandExecutor.ExecuteAsync(command).GetAwaiter().GetResult();
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 return new CommandResult {ResultType = CommandResultType.Error};
             }
-
-            throw new NotImplementedException();
         }
 
         private void ValidateArgs(string commandName, string serialization)
