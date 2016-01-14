@@ -32,7 +32,7 @@ namespace Pancakes.Commands
                 if (!this.commandRegistry.IsRegistered(commandName))
                     return new CommandResult {ResultType = CommandResultType.Unknown};
 
-                var commandType = this.commandRegistry.Locate(commandName);
+                var commandType = this.commandRegistry.GetRegisteredType(commandName);
                 var command = (ICommand) this.serviceLocator.GetService(commandType);
                 this.commandSerializer.DeserializeInto(serialization, command);
                 return this.commandExecutor.ExecuteAsync(command).GetAwaiter().GetResult();

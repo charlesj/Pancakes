@@ -6,7 +6,7 @@ namespace Pancakes.Commands
     {
         void Register(Type commandType);
         bool IsRegistered(string commandName);
-        Type Locate(string commandName);
+        Type GetRegisteredType(string commandName);
         string BuildCommandName(Type commandType);
     }
 }

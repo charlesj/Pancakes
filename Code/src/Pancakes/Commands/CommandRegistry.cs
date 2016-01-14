@@ -25,14 +25,14 @@ namespace Pancakes.Commands
 
         public bool IsRegistered(string commandName)
         {
-            return this.internalRegistry.ContainsKey(commandName);
+            return this.internalRegistry.ContainsKey(commandName.ToLowerInvariant());
         }
 
-        public Type Locate(string commandName)
+        public Type GetRegisteredType(string commandName)
         {
             if(string.IsNullOrWhiteSpace(commandName))
                 throw new ErrorCodeArgumentNullException(CoreErrorCodes.InvalidCommandLocationString, nameof(commandName));
-            return this.internalRegistry[commandName];
+            return this.internalRegistry[commandName.ToLowerInvariant()];
         }
 
         public string BuildCommandName(Type commandType)

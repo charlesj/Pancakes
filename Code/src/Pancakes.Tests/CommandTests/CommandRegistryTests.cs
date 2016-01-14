@@ -35,6 +35,13 @@ namespace Pancakes.Tests.CommandTests
             }
 
             [Fact]
+            public void ReturnsTrue_WhenPassedUppercase()
+            {
+                this.SystemUnderTest.Register(typeof(TestCommand));
+                Assert.True(this.SystemUnderTest.IsRegistered("Test"));
+            }
+
+            [Fact]
             public void ReturnsTrue_WhenRegistered()
             {
                 this.SystemUnderTest.Register(typeof(TestCommand));
@@ -58,13 +65,13 @@ namespace Pancakes.Tests.CommandTests
             }
         }
 
-        public class Locate : CommandRegistryTests
+        public class GetRegisteredType : CommandRegistryTests
         {
             [Fact]
             public void Throws_NullException_WhenNullIsPassed()
             {
                 var exception = Assert.Throws<ErrorCodeArgumentNullException>(
-                    () => this.SystemUnderTest.Locate(""));
+                    () => this.SystemUnderTest.GetRegisteredType(""));
 
                 Assert.Equal(CoreErrorCodes.InvalidCommandLocationString, exception.ErrorCode);
             }
@@ -73,7 +80,17 @@ namespace Pancakes.Tests.CommandTests
             public void CanGet_RegisteredCommandType()
             {
                 this.SystemUnderTest.Register(typeof(TestCommand));
-                var type = this.SystemUnderTest.Locate("test");
+                var type = this.SystemUnderTest.GetRegisteredType("test");
+
+                Assert.Equal(typeof(TestCommand), type);
+            }
+
+            [Fact]
+            public void CanGet_RegisteredCommandType_WithUpercaseCommand()
+            {
+                this.SystemUnderTest.Register(typeof(TestCommand));
+                var type = this.SystemUnderTest.GetRegisteredType("Test");
+                Assert.Equal(typeof(TestCommand), type);
             }
         }
 

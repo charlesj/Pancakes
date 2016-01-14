@@ -48,7 +48,7 @@ namespace Pancakes.Tests.CommandTests
             this.Setup<ICommandRegistry>().Setup(reg => reg.IsRegistered("command")).Returns(true);
             var commandType = this.GetMock<ICommand>().GetType();
             this.Setup<ICommandRegistry>()
-                .Setup(reg => reg.Locate("command"))
+                .Setup(reg => reg.GetRegisteredType("command"))
                 .Returns(commandType);
             this.Setup<IServiceLocator>().Setup(loc => loc.GetService(commandType)).Throws<Exception>();
 
