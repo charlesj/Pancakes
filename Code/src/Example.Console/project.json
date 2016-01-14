@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "description": "Example.Console Console Application",
   "authors": [ "josh charles <josh.charles@gmail.com" ],
@@ -11,7 +11,9 @@
   },
 
   "dependencies": {
-    "Pancakes": "1.0.0-*"
+    "Pancakes": "1.0.0-*",
+    "System.IO": "4.0.11-beta-23516",
+    "System.Net.Http": "4.0.1-beta-23516"
   },
 
   "commands": {

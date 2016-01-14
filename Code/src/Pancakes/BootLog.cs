@@ -36,22 +36,6 @@ namespace Pancakes
                 $"{entry.Timestamp.LocalDateTime.ToString("HH:mm:ss")} {entry.Level} {entry.Component}: {entry.Message}");
         }
 
-        public class BootLogEntry
-        {
-            public BootLogEntry(IClock clock, string level, string component, string message)
-            {
-                Level = level;
-                Component = component;
-                Message = message;
-                this.Timestamp = clock.Now();
-            }
-
-            public DateTimeOffset Timestamp { get; }
-            public string Level { get; }
-            public string Component { get; }
-            public string Message { get;  }
-        }
-
         public void SetOutstream(Action<string> output)
         {
             this.output = output;

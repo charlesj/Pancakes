@@ -6,9 +6,10 @@ namespace Pancakes
     public class Kernel
     {
         private BootLog bootlog;
+
         public BootConfiguration BootConfiguration { get; private set; }
 
-        public IReadOnlyList<BootLog.BootLogEntry> BootLog => this.bootlog.Log;
+        public IReadOnlyList<BootLogEntry> BootLog => this.bootlog.Log;
 
         public void Boot(BootConfiguration configuration)
         {
