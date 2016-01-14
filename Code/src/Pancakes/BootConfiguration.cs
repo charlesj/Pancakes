@@ -1,20 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 using Pancakes.ErrorCodes;
 using Pancakes.Exceptions;
+using Pancakes.ServiceLocator;
 
 namespace Pancakes
 {
     public class BootConfiguration
     {
         private bool hasBeenBooted;
+        private readonly List<IServiceRegistration> serviceRegistrations;
 
         public BootConfiguration()
         {
+            this.serviceRegistrations = new List<IServiceRegistration>();
         }
 
         public bool Verbose { get; private set; }
-
         public Action<string> Output { get; private set; }
+
+        public IReadOnlyList<IServiceRegistration> ServiceRegistrations => serviceRegistrations;
 
         public static BootConfiguration DefaultConfiguration
         {
@@ -42,6 +47,12 @@ namespace Pancakes
         public BootConfiguration WithOutput(Action<string> output)
         {
             this.Output = output;
+            return this;
+        }
+
+        public BootConfiguration WithServices(IServiceRegistration serviceRegistration)
+        {
+            this.serviceRegistrations.Add(serviceRegistration);
             return this;
         }
     }

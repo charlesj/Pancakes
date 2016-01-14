@@ -38,5 +38,15 @@ namespace Pancakes.Tests
 
             Assert.True(!string.IsNullOrEmpty(written));
         }
+
+        [Fact]
+        public void ServiceLocatorIsSet_PostBoot()
+        {
+            var configuration = BootConfiguration.DefaultConfiguration;
+            var kernel = new Kernel();
+            kernel.Boot(configuration);
+
+            Assert.NotNull(kernel.ServiceLocator);
+        }
     }
 }

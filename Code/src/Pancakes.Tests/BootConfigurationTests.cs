@@ -1,6 +1,8 @@
 ﻿using System;
 using Pancakes.ErrorCodes;
 using Pancakes.Exceptions;
+using Pancakes.ServiceLocator;
+using SimpleInjector;
 using Xunit;
 
 namespace Pancakes.Tests
@@ -40,6 +42,24 @@ namespace Pancakes.Tests
             catch (ErrorCodeInvalidOperationException exception)
             {
                 Assert.Equal(CoreErrorCodes.CannotConfigurePostBoot, exception.ErrorCode);
+            }
+        }
+
+        [Fact]
+        public void CanAddServiceRegistrations()
+        {
+            var config = new BootConfiguration();
+
+            var registration = new TestServiceRegistration();
+            config.WithServices(registration);
+
+            Assert.Collection(config.ServiceRegistrations, item => Assert.Equal(registration, item));
+        }
+
+        public class TestServiceRegistration : IServiceRegistration
+        {
+            public void RegisterServices(Container container)
+            {
             }
         }
     }

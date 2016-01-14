@@ -19,9 +19,15 @@ namespace Pancakes.ServiceLocator
 
         public void RegisterServices(IServiceRegistration[] registrations)
         {
+            this.RegisterServices(registrations, null);
+        }
+
+        internal void RegisterServices(IServiceRegistration[] registrations, BootLog log)
+        {
             this.container = new Container();
             foreach (var registration in registrations)
             {
+                log?.Info("ServiceLocator", $"Loading Services {registration.GetType().Name}");
                 registration.RegisterServices(container);
             }
 
