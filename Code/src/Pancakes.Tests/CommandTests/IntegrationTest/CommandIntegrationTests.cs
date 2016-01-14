@@ -10,14 +10,8 @@ namespace Pancakes.Tests.CommandTests.IntegrationTest
         [Fact]
         public void FullRun()
         {
-            var container = new Container();
-            container.Register<ICommandExecutor, CommandExecutor>(Lifestyle.Singleton);
-            container.Register<ICommandRegistry, CommandRegistry>(Lifestyle.Singleton);
-            container.Register<ICommandSerializer, CommandSerializer>(Lifestyle.Singleton);
-            container.Register<ICommandProcessor, CommandProcessor>(Lifestyle.Singleton);
-            container.Register<IFooService, FooService>();
-            var serviceLocator = new SimpleInjectorServiceLocator(container);
-            container.Register<IServiceLocator>(() => serviceLocator, Lifestyle.Singleton);
+            var serviceLocator = new SimpleInjectorServiceLocator();
+            serviceLocator.RegisterServices(new IServiceRegistration[] {new DefaultCommandsServiceRegistration(), new TestServiceRegistration() });
 
             var commandRegistry = serviceLocator.GetService<ICommandRegistry>();
             commandRegistry.Register(typeof(TestCommand));
@@ -25,6 +19,14 @@ namespace Pancakes.Tests.CommandTests.IntegrationTest
             var processor = serviceLocator.GetService<ICommandProcessor>();
             var result = processor.Process("Test", "{\"Name\":\"Josh\"}");
             Assert.Equal(CommandResultType.Success, result.ResultType);
+        }
+
+        public class TestServiceRegistration : IServiceRegistration
+        {
+            public void RegisterServices(Container container)
+            {
+                container.Register<IFooService, FooService>();
+            }
         }
 
         public interface IFooService

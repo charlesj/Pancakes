@@ -5,12 +5,7 @@ namespace Pancakes.ServiceLocator
 {
     public class SimpleInjectorServiceLocator : IServiceLocator
     {
-        private readonly Container container;
-
-        public SimpleInjectorServiceLocator(Container container)
-        {
-            this.container = container;
-        }
+        private Container container;
 
         public object GetService(Type type)
         {
@@ -20,6 +15,17 @@ namespace Pancakes.ServiceLocator
         public TServiceType GetService<TServiceType>() where TServiceType : class
         {
             return this.container.GetInstance<TServiceType>();
+        }
+
+        public void RegisterServices(IServiceRegistration[] registrations)
+        {
+            this.container = new Container();
+            foreach (var registration in registrations)
+            {
+                registration.RegisterServices(container);
+            }
+
+            container.Register<IServiceLocator>(() => this, Lifestyle.Singleton);
         }
     }
 }

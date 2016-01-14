@@ -6,5 +6,6 @@ namespace Pancakes.ServiceLocator
     {
         object GetService(Type type);
         TServiceType GetService<TServiceType>() where TServiceType : class;
+        void RegisterServices(IServiceRegistration[] registrations);
     }
 }

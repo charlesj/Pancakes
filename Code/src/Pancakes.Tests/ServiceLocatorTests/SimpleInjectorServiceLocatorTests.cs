@@ -6,15 +6,35 @@ namespace Pancakes.Tests.ServiceLocatorTests
 {
     public class SimpleInjectorServiceLocatorTests
     {
+        public class RegisterServicess : SimpleInjectorServiceLocatorTests
+        {
+            [Fact]
+            public void RegisterServices_CanBeRetrieved()
+            {
+                var locator = new SimpleInjectorServiceLocator();
+                locator.RegisterServices(new IServiceRegistration[] {new TestServiceRegistration()});
+                var service = locator.GetService<IFooService>();
+                Assert.NotNull(service);
+            }
+        }
+
         public class Get : SimpleInjectorServiceLocatorTests
         {
             [Fact]
+            public void CanGetIServiceLocator()
+            {
+                var locator = new SimpleInjectorServiceLocator();
+                locator.RegisterServices(new IServiceRegistration[] { });
+                var self = locator.GetService<IServiceLocator>();
+
+                Assert.Same(locator, self);
+            }
+
+            [Fact]
             public void CanGetService()
             {
-                var container = new Container();
-                container.Register<IFooService, FooService>();
-
-                var locator = new SimpleInjectorServiceLocator(container);
+                var locator = new SimpleInjectorServiceLocator();
+                locator.RegisterServices(new IServiceRegistration[] { new TestServiceRegistration() });
                 var service = locator.GetService(typeof (IFooService));
                 Assert.NotNull(service);
             }
@@ -22,10 +42,8 @@ namespace Pancakes.Tests.ServiceLocatorTests
             [Fact]
             public void CanGetService_WithGenericMethod()
             {
-                var container = new Container();
-                container.Register<IFooService, FooService>();
-
-                var locator = new SimpleInjectorServiceLocator(container);
+                var locator = new SimpleInjectorServiceLocator();
+                locator.RegisterServices(new IServiceRegistration[] { new TestServiceRegistration() });
                 var service = locator.GetService<IFooService>();
                 Assert.NotNull(service);
             }
@@ -33,8 +51,8 @@ namespace Pancakes.Tests.ServiceLocatorTests
             [Fact]
             public void CanGetService_Directly()
             {
-                var container = new Container();
-                var locator = new SimpleInjectorServiceLocator(container);
+                var locator = new SimpleInjectorServiceLocator();
+                locator.RegisterServices(new IServiceRegistration[] { });
                 var service = locator.GetService<FooService>();
                 Assert.NotNull(service);
             }
@@ -50,6 +68,14 @@ namespace Pancakes.Tests.ServiceLocatorTests
             public string GetName()
             {
                 return "Fozzy";
+            }
+        }
+
+        public class TestServiceRegistration : IServiceRegistration
+        {
+            public void RegisterServices(Container container)
+            {
+                container.Register<IFooService, FooService>();
             }
         }
     }
