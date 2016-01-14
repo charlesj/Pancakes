@@ -6,7 +6,14 @@ namespace Pancakes.Commands
     {
         public async Task<CommandResult> ExecuteAsync(ICommand command)
         {
-            return new CommandResult();
+            if (!command.Validate())
+                return new CommandResult {ResultType = CommandResultType.Invalid};
+            if (!command.Authorize())
+                return new CommandResult() {ResultType = CommandResultType.Unauthorized};
+
+            command.Execute();
+
+            return new CommandResult() {ResultType = CommandResultType.Success};
         }
     }
 }
