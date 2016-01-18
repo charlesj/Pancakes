@@ -39,6 +39,11 @@ namespace Pancakes.Tests.TestUtilities
             return (TSystemUnderTest)instance;
         }
 
+        public object GetMock(Type type)
+        {
+            return mockRegistry.Get(type);
+        }
+
         public TMockType GetMock<TMockType>()
         {
             return (TMockType)mockRegistry.Get(typeof(TMockType));
