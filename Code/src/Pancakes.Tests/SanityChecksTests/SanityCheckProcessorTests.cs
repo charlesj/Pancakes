@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Moq;
 using Pancakes.SanityChecks;
 using Pancakes.ServiceLocator;
@@ -21,14 +22,15 @@ namespace Pancakes.Tests.SanityChecksTests
             var sanityCheckType = typeof (GoodSanityCheck);
             this.Setup<IServiceLocator>()
                 .Setup(sl => sl.GetService(sanityCheckType)).Returns(new GoodSanityCheck());
-            Assert.True(this.SystemUnderTest.Check(new[] {sanityCheckType}));
+            var sanityCheckResult = this.SystemUnderTest.Check(new[] {sanityCheckType});
+            Assert.True(sanityCheckResult.All(kvp => kvp.Value));
 
             this.Setup<IServiceLocator>()
                 .Verify(s => s.GetService(sanityCheckType), Times.Once);
         }
 
         [Fact]
-        public void AnyFalsCheck_ReturnsFalse()
+        public void AnyFalseCheck_ReturnsFalse()
         {
             var badSanityCheckType = typeof(BadSanityCheck);
             this.Setup<IServiceLocator>()
@@ -37,7 +39,8 @@ namespace Pancakes.Tests.SanityChecksTests
             this.Setup<IServiceLocator>()
                 .Setup(sl => sl.GetService(goodSanityCheckType)).Returns(new GoodSanityCheck());
 
-            Assert.False(this.SystemUnderTest.Check(new[] { goodSanityCheckType, badSanityCheckType }));
+            var sanityCheckResult = this.SystemUnderTest.Check(new[] { goodSanityCheckType, badSanityCheckType });
+            Assert.False(sanityCheckResult.All(kvp => kvp.Value));
         }
 
         public class GoodSanityCheck : ICheckSanity

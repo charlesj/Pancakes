@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
+using Pancakes.Extensions;
 using Pancakes.ServiceLocator;
 
 namespace Pancakes.SanityChecks
@@ -13,15 +14,21 @@ namespace Pancakes.SanityChecks
             this.serviceLocator = serviceLocator;
         }
 
-        public bool Check(Type[] types)
+        public SanityCheckResult Check(Type[] types)
         {
-            var results = types.Select(type =>
+            var result = new SanityCheckResult();
+            types.Each(type =>
             {
-                var check = (ICheckSanity) this.serviceLocator.GetService(type);
-                return check.Probe();
+                var check = (ICheckSanity)this.serviceLocator.GetService(type);
+                result.Add(type, check.Probe());
             });
 
-            return results.All(r => r);
+            return result;
         }
+    }
+
+    public class SanityCheckResult : Dictionary<Type, bool>
+    {
+        
     }
 }
