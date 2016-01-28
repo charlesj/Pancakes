@@ -39,8 +39,31 @@ namespace Pancakes.Tests.SanityChecksTests
             this.Mock<IServiceLocator>()
                 .Setup(sl => sl.GetService(goodSanityCheckType)).Returns(new GoodSanityCheck());
 
-            var sanityCheckResult = this.SystemUnderTest.Check(new[] { goodSanityCheckType, badSanityCheckType });
-            Assert.False(sanityCheckResult.All(kvp => kvp.Value));
+            var result = this.SystemUnderTest.Check(new[] { goodSanityCheckType, badSanityCheckType });
+            Assert.Collection(result, 
+                                kvp => Assert.True(kvp.Value),
+                                kvp => Assert.False(kvp.Value));
+        }
+
+        [Fact]
+        public void NonConstructableSanityCheck_ReturnsFalse()
+        {
+            this.Mock<IServiceLocator>()
+                .Setup(sl => sl.GetService(It.IsAny<Type>())).Throws(new Exception());
+
+            var result = this.SystemUnderTest.Check(new[] {typeof (BadSanityCheck)});
+            Assert.Collection(result, kvp => Assert.False(kvp.Value));
+        }
+
+        [Fact]
+        public void ProbeThrowingException_ReturnsFalse()
+        {
+            var failSanityCheck = typeof(FailSanityCheck);
+            this.Mock<IServiceLocator>()
+                .Setup(sl => sl.GetService(failSanityCheck)).Returns(new FailSanityCheck());
+
+            var result = this.SystemUnderTest.Check(new[] { failSanityCheck });
+            Assert.Collection(result, kvp => Assert.False(kvp.Value));
         }
 
         public class GoodSanityCheck : ICheckSanity
@@ -56,6 +79,14 @@ namespace Pancakes.Tests.SanityChecksTests
             public bool Probe()
             {
                 return false;
+            }
+        }
+
+        public class FailSanityCheck : ICheckSanity
+        {
+            public bool Probe()
+            {
+                throw new NotImplementedException();
             }
         }
     }

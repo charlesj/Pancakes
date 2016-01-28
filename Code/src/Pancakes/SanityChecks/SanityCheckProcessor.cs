@@ -19,8 +19,15 @@ namespace Pancakes.SanityChecks
             var result = new SanityCheckResult();
             types.Each(type =>
             {
-                var check = (ICheckSanity)this.serviceLocator.GetService(type);
-                result.Add(type, check.Probe());
+                try
+                {
+                    var check = (ICheckSanity)this.serviceLocator.GetService(type);
+                    result.Add(type, check.Probe());
+                }
+                catch (Exception)
+                {
+                    result.Add(type, false);
+                }
             });
 
             return result;
