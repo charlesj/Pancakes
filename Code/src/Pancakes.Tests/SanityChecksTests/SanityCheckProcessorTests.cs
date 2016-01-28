@@ -20,12 +20,12 @@ namespace Pancakes.Tests.SanityChecksTests
         public void RunChecksWithSingleTypeReturningTrue()
         {
             var sanityCheckType = typeof (GoodSanityCheck);
-            this.Setup<IServiceLocator>()
+            this.Mock<IServiceLocator>()
                 .Setup(sl => sl.GetService(sanityCheckType)).Returns(new GoodSanityCheck());
             var sanityCheckResult = this.SystemUnderTest.Check(new[] {sanityCheckType});
             Assert.True(sanityCheckResult.All(kvp => kvp.Value));
 
-            this.Setup<IServiceLocator>()
+            this.Mock<IServiceLocator>()
                 .Verify(s => s.GetService(sanityCheckType), Times.Once);
         }
 
@@ -33,10 +33,10 @@ namespace Pancakes.Tests.SanityChecksTests
         public void AnyFalseCheck_ReturnsFalse()
         {
             var badSanityCheckType = typeof(BadSanityCheck);
-            this.Setup<IServiceLocator>()
+            this.Mock<IServiceLocator>()
                 .Setup(sl => sl.GetService(badSanityCheckType)).Returns(new BadSanityCheck());
             var goodSanityCheckType = typeof(GoodSanityCheck);
-            this.Setup<IServiceLocator>()
+            this.Mock<IServiceLocator>()
                 .Setup(sl => sl.GetService(goodSanityCheckType)).Returns(new GoodSanityCheck());
 
             var sanityCheckResult = this.SystemUnderTest.Check(new[] { goodSanityCheckType, badSanityCheckType });

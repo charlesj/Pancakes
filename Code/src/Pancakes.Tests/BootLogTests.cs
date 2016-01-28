@@ -13,7 +13,7 @@ namespace Pancakes.Tests
             public void CanWriteToInfo()
             {
                 var now = new DateTimeOffset(2015, 10, 30, 0,0,0, new TimeSpan());
-                this.Setup<IClock>().Setup(clock => clock.Now()).Returns(now);
+                this.Mock<IClock>().Setup(clock => clock.Now()).Returns(now);
                 this.SystemUnderTest.Info("test", "testing");
                 Assert.Collection(this.SystemUnderTest.Log,
                     entry =>
@@ -29,7 +29,7 @@ namespace Pancakes.Tests
             public void CanWriteToError()
             {
                 var now = new DateTimeOffset(2015, 10, 30, 0, 0, 0, new TimeSpan());
-                this.Setup<IClock>().Setup(clock => clock.Now()).Returns(now);
+                this.Mock<IClock>().Setup(clock => clock.Now()).Returns(now);
                 this.SystemUnderTest.Error("test", "testing");
                 Assert.Collection(this.SystemUnderTest.Log,
                     entry =>

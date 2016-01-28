@@ -39,20 +39,20 @@ namespace Pancakes.Tests.TestUtilities
             return (TSystemUnderTest)instance;
         }
 
-        public object GetMock(Type type)
+        public object GetMocked(Type type)
         {
             return mockRegistry.Get(type);
         }
 
-        public TMockType GetMock<TMockType>()
+        public TMockType GetMocked<TMockType>()
         {
             return (TMockType)mockRegistry.Get(typeof(TMockType));
         }
 
-        public Mock<TMockType> Setup<TMockType>() where TMockType : class
+        public Mock<TMockType> Mock<TMockType>() where TMockType : class
         {
             var mockObject = mockRegistry.Get(typeof (TMockType));
-            return Mock.Get((TMockType)mockObject);
+            return Moq.Mock.Get((TMockType)mockObject);
 
         }
     }
