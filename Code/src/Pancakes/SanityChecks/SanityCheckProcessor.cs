@@ -18,7 +18,6 @@ namespace Pancakes.SanityChecks
             var result = new SanityCheckResult();
             types.Each(type =>
             {
-                log.Info(Constants.BootComponents.SanityChecks, "Starting Sanity Checks");
                 try
                 {
                     var check = (ICheckSanity)serviceLocator.GetService(type);
@@ -35,7 +34,7 @@ namespace Pancakes.SanityChecks
                     log.Error(Constants.BootComponents.SanityChecks, $"{type.Name} failed sanity check");
                 }
             });
-            log.Info(Constants.BootComponents.SanityChecks, "Sanity Checks Complete");
+
             return result;
         }
     }

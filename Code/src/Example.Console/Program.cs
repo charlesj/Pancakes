@@ -1,4 +1,5 @@
-﻿using Pancakes;
+﻿using Example.Console.SanityChecks;
+using Pancakes;
 
 namespace Example.Console
 {
@@ -7,8 +8,9 @@ namespace Example.Console
         public static void Main(string[] args)
         {
             var bootConfig = BootConfiguration.DefaultConfiguration
-                                .BeVerbose()
-                                .WithOutput(System.Console.WriteLine);
+                .BeVerbose()
+                .WithOutput(System.Console.WriteLine)
+                .CheckSanityWith(typeof (InternetAccessSanityCheck));
 
             var kernel = new Kernel();
             kernel.Boot(bootConfig);
