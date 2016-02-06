@@ -1,5 +1,6 @@
 ﻿using Example.Console.SanityChecks;
 using Pancakes;
+using Pancakes.ServiceLocator;
 
 namespace Example.Console
 {
@@ -10,7 +11,8 @@ namespace Example.Console
             var bootConfig = BootConfiguration.DefaultConfiguration
                 .BeVerbose()
                 .WithOutput(System.Console.WriteLine)
-                .CheckSanityWith(typeof (InternetAccessSanityCheck));
+                .CheckSanityWith(typeof (InternetAccessSanityCheck))
+                .CheckSanityWith(typeof (SimpleInjectorSanityCheck));
 
             var kernel = new Kernel();
             kernel.Boot(bootConfig);
