@@ -4,16 +4,24 @@ using Moq;
 using Pancakes.SanityChecks;
 using Pancakes.ServiceLocator;
 using Pancakes.Tests.TestUtilities;
+using Pancakes.Utility;
 using Xunit;
 
 namespace Pancakes.Tests.SanityChecksTests
 {
     public class SanityCheckProcessorTests : BaseUnitTest<SanityCheckProcessor>
     {
+        private readonly BootLog log;
+
+        public SanityCheckProcessorTests()
+        {
+            log = new BootLog(GetMocked<IClock>());
+        }
+
         [Fact]
         public void CanRunChecksWithEmptyList()
         {
-            this.SystemUnderTest.Check(new Type[0]);
+            this.SystemUnderTest.Check(new Type[0], log);
         }
 
         [Fact]
@@ -22,7 +30,7 @@ namespace Pancakes.Tests.SanityChecksTests
             var sanityCheckType = typeof (GoodSanityCheck);
             this.Mock<IServiceLocator>()
                 .Setup(sl => sl.GetService(sanityCheckType)).Returns(new GoodSanityCheck());
-            var sanityCheckResult = this.SystemUnderTest.Check(new[] {sanityCheckType});
+            var sanityCheckResult = this.SystemUnderTest.Check(new[] {sanityCheckType}, log);
             Assert.True(sanityCheckResult.All(kvp => kvp.Value));
 
             this.Mock<IServiceLocator>()
@@ -39,7 +47,7 @@ namespace Pancakes.Tests.SanityChecksTests
             this.Mock<IServiceLocator>()
                 .Setup(sl => sl.GetService(goodSanityCheckType)).Returns(new GoodSanityCheck());
 
-            var result = this.SystemUnderTest.Check(new[] { goodSanityCheckType, badSanityCheckType });
+            var result = this.SystemUnderTest.Check(new[] { goodSanityCheckType, badSanityCheckType }, log);
             Assert.Collection(result, 
                                 kvp => Assert.True(kvp.Value),
                                 kvp => Assert.False(kvp.Value));
@@ -51,7 +59,7 @@ namespace Pancakes.Tests.SanityChecksTests
             this.Mock<IServiceLocator>()
                 .Setup(sl => sl.GetService(It.IsAny<Type>())).Throws(new Exception());
 
-            var result = this.SystemUnderTest.Check(new[] {typeof (BadSanityCheck)});
+            var result = this.SystemUnderTest.Check(new[] {typeof (BadSanityCheck)}, log);
             Assert.Collection(result, kvp => Assert.False(kvp.Value));
         }
 
@@ -62,7 +70,7 @@ namespace Pancakes.Tests.SanityChecksTests
             this.Mock<IServiceLocator>()
                 .Setup(sl => sl.GetService(failSanityCheck)).Returns(new FailSanityCheck());
 
-            var result = this.SystemUnderTest.Check(new[] { failSanityCheck });
+            var result = this.SystemUnderTest.Check(new[] { failSanityCheck }, log);
             Assert.Collection(result, kvp => Assert.False(kvp.Value));
         }
 

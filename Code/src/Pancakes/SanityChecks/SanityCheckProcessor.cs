@@ -14,7 +14,7 @@ namespace Pancakes.SanityChecks
             this.serviceLocator = serviceLocator;
         }
 
-        public SanityCheckResult Check(Type[] types)
+        public SanityCheckResult Check(Type[] types, BootLog log)
         {
             var result = new SanityCheckResult();
             types.Each(type =>

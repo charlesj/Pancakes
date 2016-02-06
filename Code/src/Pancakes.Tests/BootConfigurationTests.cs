@@ -64,7 +64,7 @@ namespace Pancakes.Tests
         public void CanAddSanityChecks()
         {
             var config = new BootConfiguration();
-            var check = new SanityCheck();
+            var check = typeof (SanityCheck);
             config.CheckSanityWith(check);
 
             Assert.Collection(config.SanityChecks, item => Assert.Same(check, item));
@@ -73,7 +73,17 @@ namespace Pancakes.Tests
         [Fact]
         public void CannotAddSanityChecksPostBoot()
         {
-            TestPostBootCheckWithAcion(config => config.CheckSanityWith(new SanityCheck()));
+            TestPostBootCheckWithAcion(config => config.CheckSanityWith(typeof(SanityCheck)));
+        }
+
+        [Fact]
+        public void CannotAddSanityCheck_ThatDoesntImplementICheckSanity()
+        {
+            var config = new BootConfiguration();
+            var exception =
+                Assert.Throws<ErrorCodeInvalidOperationException>(() => config.CheckSanityWith(typeof (string)));
+
+            Assert.Equal(CoreErrorCodes.IllegalSanityCheck, exception.ErrorCode);
         }
 
         private void TestPostBootCheckWithAcion(Action<BootConfiguration> action)

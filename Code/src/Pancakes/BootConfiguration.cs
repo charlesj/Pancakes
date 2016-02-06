@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Pancakes.ErrorCodes;
 using Pancakes.Exceptions;
 using Pancakes.SanityChecks;
@@ -11,19 +12,19 @@ namespace Pancakes
     {
         private bool hasBeenBooted;
         private readonly List<IServiceRegistration> serviceRegistrations;
-        private List<ICheckSanity> sanityChecks;
+        private List<Type> sanityChecks;
 
         public BootConfiguration()
         {
             this.serviceRegistrations = new List<IServiceRegistration>();
-            this.sanityChecks = new List<ICheckSanity>();
+            this.sanityChecks = new List<Type>();
         }
 
         public bool Verbose { get; private set; }
         public Action<string> Output { get; private set; }
 
         public IReadOnlyList<IServiceRegistration> ServiceRegistrations => serviceRegistrations;
-        public IReadOnlyCollection<ICheckSanity> SanityChecks => sanityChecks;
+        public IReadOnlyCollection<Type> SanityChecks => sanityChecks;
 
         public static BootConfiguration DefaultConfiguration
         {
@@ -62,9 +63,11 @@ namespace Pancakes
             return this;
         }
 
-        public BootConfiguration CheckSanityWith(ICheckSanity check)
+        public BootConfiguration CheckSanityWith(Type check)
         {
             ProtectAgainstConfiguringAfterBoot();
+            if(!typeof(ICheckSanity).IsAssignableFrom(check))
+                throw new ErrorCodeInvalidOperationException(CoreErrorCodes.IllegalSanityCheck);
             this.sanityChecks.Add(check);
             return this;
         }
