@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Pancakes.Extensions;
 using Pancakes.ServiceLocator;
 
@@ -19,23 +18,25 @@ namespace Pancakes.SanityChecks
             var result = new SanityCheckResult();
             types.Each(type =>
             {
+                log.Info(Constants.BootComponents.SanityChecks, "Starting Sanity Checks");
                 try
                 {
-                    var check = (ICheckSanity)this.serviceLocator.GetService(type);
-                    result.Add(type, check.Probe());
+                    var check = (ICheckSanity)serviceLocator.GetService(type);
+                    var sane = check.Probe();
+                    result.Add(type, sane);
+                    if(sane)
+                        log.Info(Constants.BootComponents.SanityChecks, $"{type.Name} is sane.");
+                    else
+                        log.Error(Constants.BootComponents.SanityChecks, $"{type.Name} failed sanity check");
                 }
                 catch (Exception)
                 {
                     result.Add(type, false);
+                    log.Error(Constants.BootComponents.SanityChecks, $"{type.Name} failed sanity check");
                 }
             });
-
+            log.Info(Constants.BootComponents.SanityChecks, "Sanity Checks Complete");
             return result;
         }
-    }
-
-    public class SanityCheckResult : Dictionary<Type, bool>
-    {
-        
     }
 }

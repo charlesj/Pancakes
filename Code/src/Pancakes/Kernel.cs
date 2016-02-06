@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Pancakes.ErrorCodes;
+using Pancakes.Exceptions;
+using Pancakes.SanityChecks;
 using Pancakes.ServiceLocator;
 using Pancakes.Utility;
 
@@ -24,18 +28,28 @@ namespace Pancakes
 
             this.bootlog.Info("Kernel", "Booting...");
             this.SetupServiceLocator(configuration.ServiceRegistrations, bootlog);
-
+            this.CheckSanity(ServiceLocator, configuration.SanityChecks.ToArray(), bootlog);
             configuration.MarkAsBooted();
             this.bootlog.Info("Kernel", "Done");
         }
 
         private void SetupServiceLocator(IReadOnlyList<IServiceRegistration> registrations, BootLog log)
         {
-            this.bootlog.Info("ServiceLocator", "Loading Service Locator");
+            this.bootlog.Info(Constants.BootComponents.ServiceLocator, "Loading Service Locator");
             var locator = new SimpleInjectorServiceLocator();
             locator.RegisterServices(registrations.ToArray(), log);
             this.ServiceLocator = locator;
-            this.bootlog.Info("ServiceLocator", "Completed Loading");
+            this.bootlog.Info(Constants.BootComponents.ServiceLocator, "Completed Loading");
+        }
+
+        private void CheckSanity(IServiceLocator serviceLocator, Type[] sanityCheckTypes, BootLog log)
+        {
+            bootlog.Info(Constants.BootComponents.SanityChecks, "Starting Sanity Checks");
+            var processor = serviceLocator.GetService<SanityCheckProcessor>();
+            var sanity = processor.Check(sanityCheckTypes, log);
+            if(sanity.Any(kvp => kvp.Value == false))
+                throw new BootException(CoreErrorCodes.InsaneKernel);
+            bootlog.Info(Constants.BootComponents.SanityChecks, "Completed Sanity Checks");
         }
     }
 }

@@ -12,6 +12,6 @@ namespace Pancakes.Exceptions
             this.ErrorCode = errorCode;
         }
 
-        public ErrorCode ErrorCode { get; private set; }
+        public ErrorCode ErrorCode { get; }
     }
 }

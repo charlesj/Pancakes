@@ -1,4 +1,7 @@
 ﻿using System;
+using Pancakes.ErrorCodes;
+using Pancakes.Exceptions;
+using Pancakes.SanityChecks;
 using Xunit;
 
 namespace Pancakes.Tests
@@ -47,6 +50,24 @@ namespace Pancakes.Tests
             kernel.Boot(configuration);
 
             Assert.NotNull(kernel.ServiceLocator);
+        }
+
+        [Fact]
+        public void BadSanityCheckThrows()
+        {
+            var configuration = new BootConfiguration();
+            configuration.CheckSanityWith(typeof (InsaneCheck));
+            var kernel = new Kernel();
+            var exception = Assert.Throws<BootException>(() => kernel.Boot(configuration));
+            Assert.Equal(CoreErrorCodes.InsaneKernel, exception.ErrorCode);
+        }
+
+        class InsaneCheck : ICheckSanity
+        {
+            public bool Probe()
+            {
+                return false;
+            }
         }
     }
 }
