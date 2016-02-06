@@ -1,6 +1,7 @@
 ﻿using System;
 using Pancakes.ErrorCodes;
 using Pancakes.Exceptions;
+using Pancakes.SanityChecks;
 using Pancakes.ServiceLocator;
 using SimpleInjector;
 using Xunit;
@@ -31,18 +32,15 @@ namespace Pancakes.Tests
         }
 
         [Fact]
+        public void CannotSetOutput_AfterBooting()
+        {
+            TestPostBootCheckWithAcion(config => config.WithOutput(str => { }));
+        }
+
+        [Fact]
         public void CannotConfigureAfterMarkingAsBooted()
         {
-            var config = new BootConfiguration();
-            config.MarkAsBooted();
-            try
-            {
-                config.BeVerbose();
-            }
-            catch (ErrorCodeInvalidOperationException exception)
-            {
-                Assert.Equal(CoreErrorCodes.CannotConfigurePostBoot, exception.ErrorCode);
-            }
+            TestPostBootCheckWithAcion(config => config.BeVerbose());
         }
 
         [Fact]
@@ -53,7 +51,45 @@ namespace Pancakes.Tests
             var registration = new TestServiceRegistration();
             config.WithServices(registration);
 
-            Assert.Collection(config.ServiceRegistrations, item => Assert.Equal(registration, item));
+            Assert.Collection(config.ServiceRegistrations, item => Assert.Same(registration, item));
+        }
+
+        [Fact]
+        public void CannotAddServiceRegistrationsPostBoot()
+        {
+            TestPostBootCheckWithAcion(config => config.WithServices(new TestServiceRegistration()));
+        }
+
+        [Fact]
+        public void CanAddSanityChecks()
+        {
+            var config = new BootConfiguration();
+            var check = new SanityCheck();
+            config.CheckSanityWith(check);
+
+            Assert.Collection(config.SanityChecks, item => Assert.Same(check, item));
+        }
+
+        [Fact]
+        public void CannotAddSanityChecksPostBoot()
+        {
+            TestPostBootCheckWithAcion(config => config.CheckSanityWith(new SanityCheck()));
+        }
+
+        private void TestPostBootCheckWithAcion(Action<BootConfiguration> action)
+        {
+            var config = new BootConfiguration();
+            config.MarkAsBooted();
+            var exception = Assert.Throws<ErrorCodeInvalidOperationException>(() => action(config)); 
+            Assert.Equal(CoreErrorCodes.CannotConfigurePostBoot, exception.ErrorCode);
+        }
+
+        public class SanityCheck : ICheckSanity
+        {
+            public bool Probe()
+            {
+                return true;
+            }
         }
 
         public class TestServiceRegistration : IServiceRegistration
