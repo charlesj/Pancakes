@@ -1,5 +1,5 @@
 ﻿using System;
-using Pancakes.Extensions;
+using System.Threading.Tasks;
 using Pancakes.ServiceLocator;
 
 namespace Pancakes.SanityChecks
@@ -13,15 +13,15 @@ namespace Pancakes.SanityChecks
             this.serviceLocator = serviceLocator;
         }
 
-        public SanityCheckResult Check(Type[] types, BootLog log)
+        public async Task<SanityCheckResult> Check(Type[] types, BootLog log)
         {
             var result = new SanityCheckResult();
-            types.Each(type =>
+            foreach(var type in types)
             {
                 try
                 {
                     var check = (ICheckSanity)serviceLocator.GetService(type);
-                    var sane = check.Probe();
+                    var sane = await check.Probe();
                     result.Add(type, sane);
                     if(sane)
                         log.Info(Constants.BootComponents.SanityChecks, $"{type.Name} passed.");
@@ -33,7 +33,7 @@ namespace Pancakes.SanityChecks
                     result.Add(type, false);
                     log.Error(Constants.BootComponents.SanityChecks, $"{type.Name} failed significantly.");
                 }
-            });
+            }
 
             return result;
         }

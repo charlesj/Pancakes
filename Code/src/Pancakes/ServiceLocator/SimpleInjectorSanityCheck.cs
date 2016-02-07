@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Pancakes.SanityChecks;
 using SimpleInjector;
 
@@ -13,17 +14,17 @@ namespace Pancakes.ServiceLocator
             _serviceLocator = serviceLocator;
         }
 
-        public bool Probe()
+        public Task<bool> Probe()
         {
             try
             {
                 var Container = ((SimpleInjectorServiceLocator) _serviceLocator).Container;
                 Container.Verify(VerificationOption.VerifyOnly);
-                return true;
+                return Task.FromResult(true);
             }
             catch (Exception)
             {
-                return false;
+                return Task.FromResult(false);
             }
         }
     }

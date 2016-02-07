@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Moq;
 using Pancakes.SanityChecks;
 using Pancakes.ServiceLocator;
@@ -25,12 +26,12 @@ namespace Pancakes.Tests.SanityChecksTests
         }
 
         [Fact]
-        public void RunChecksWithSingleTypeReturningTrue()
+        public async void RunChecksWithSingleTypeReturningTrue()
         {
             var sanityCheckType = typeof (GoodSanityCheck);
             this.Mock<IServiceLocator>()
                 .Setup(sl => sl.GetService(sanityCheckType)).Returns(new GoodSanityCheck());
-            var sanityCheckResult = this.SystemUnderTest.Check(new[] {sanityCheckType}, log);
+            var sanityCheckResult = await this.SystemUnderTest.Check(new[] {sanityCheckType}, log);
             Assert.True(sanityCheckResult.All(kvp => kvp.Value));
 
             this.Mock<IServiceLocator>()
@@ -38,7 +39,7 @@ namespace Pancakes.Tests.SanityChecksTests
         }
 
         [Fact]
-        public void AnyFalseCheck_ReturnsFalse()
+        public async void AnyFalseCheck_ReturnsFalse()
         {
             var badSanityCheckType = typeof(BadSanityCheck);
             this.Mock<IServiceLocator>()
@@ -47,52 +48,52 @@ namespace Pancakes.Tests.SanityChecksTests
             this.Mock<IServiceLocator>()
                 .Setup(sl => sl.GetService(goodSanityCheckType)).Returns(new GoodSanityCheck());
 
-            var result = this.SystemUnderTest.Check(new[] { goodSanityCheckType, badSanityCheckType }, log);
+            var result = await this.SystemUnderTest.Check(new[] { goodSanityCheckType, badSanityCheckType }, log);
             Assert.Collection(result, 
                                 kvp => Assert.True(kvp.Value),
                                 kvp => Assert.False(kvp.Value));
         }
 
         [Fact]
-        public void NonConstructableSanityCheck_ReturnsFalse()
+        public async void NonConstructableSanityCheck_ReturnsFalse()
         {
             this.Mock<IServiceLocator>()
                 .Setup(sl => sl.GetService(It.IsAny<Type>())).Throws(new Exception());
 
-            var result = this.SystemUnderTest.Check(new[] {typeof (BadSanityCheck)}, log);
+            var result = await this.SystemUnderTest.Check(new[] {typeof (BadSanityCheck)}, log);
             Assert.Collection(result, kvp => Assert.False(kvp.Value));
         }
 
         [Fact]
-        public void ProbeThrowingException_ReturnsFalse()
+        public async void ProbeThrowingException_ReturnsFalse()
         {
             var failSanityCheck = typeof(FailSanityCheck);
             this.Mock<IServiceLocator>()
                 .Setup(sl => sl.GetService(failSanityCheck)).Returns(new FailSanityCheck());
 
-            var result = this.SystemUnderTest.Check(new[] { failSanityCheck }, log);
+            var result = await this.SystemUnderTest.Check(new[] { failSanityCheck }, log);
             Assert.Collection(result, kvp => Assert.False(kvp.Value));
         }
 
         public class GoodSanityCheck : ICheckSanity
         {
-            public bool Probe()
+            public Task<bool> Probe()
             {
-                return true;
+                return Task.FromResult(true);
             }
         }
 
         public class BadSanityCheck : ICheckSanity
         {
-            public bool Probe()
+            public Task<bool> Probe()
             {
-                return false;
+                return Task.FromResult(false);
             }
         }
 
         public class FailSanityCheck : ICheckSanity
         {
-            public bool Probe()
+            public Task<bool> Probe()
             {
                 throw new NotImplementedException();
             }

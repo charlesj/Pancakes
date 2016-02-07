@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Pancakes.ErrorCodes;
 using Pancakes.Exceptions;
 using Pancakes.SanityChecks;
@@ -28,7 +29,7 @@ namespace Pancakes
 
             this.bootlog.Info("Kernel", "Booting...");
             this.SetupServiceLocator(configuration.ServiceRegistrations, bootlog);
-            this.CheckSanity(ServiceLocator, configuration.SanityChecks.ToArray(), bootlog);
+            this.CheckSanity(ServiceLocator, configuration.SanityChecks.ToArray(), bootlog).GetAwaiter().GetResult();
             configuration.MarkAsBooted();
             this.bootlog.Info("Kernel", "Done");
         }
@@ -42,11 +43,11 @@ namespace Pancakes
             this.bootlog.Info(Constants.BootComponents.ServiceLocator, "Completed Loading");
         }
 
-        private void CheckSanity(IServiceLocator serviceLocator, Type[] sanityCheckTypes, BootLog log)
+        private async Task CheckSanity(IServiceLocator serviceLocator, Type[] sanityCheckTypes, BootLog log)
         {
             bootlog.Info(Constants.BootComponents.SanityChecks, "Starting Sanity Checks");
             var processor = serviceLocator.GetService<SanityCheckProcessor>();
-            var sanity = processor.Check(sanityCheckTypes, log);
+            var sanity = await processor.Check(sanityCheckTypes, log);
             if(sanity.Any(kvp => kvp.Value == false))
                 throw new BootException(CoreErrorCodes.InsaneKernel);
             bootlog.Info(Constants.BootComponents.SanityChecks, "Completed Sanity Checks");

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Pancakes.ErrorCodes;
 using Pancakes.Exceptions;
 using Pancakes.SanityChecks;
@@ -96,9 +97,9 @@ namespace Pancakes.Tests
 
         public class SanityCheck : ICheckSanity
         {
-            public bool Probe()
+            public Task<bool> Probe()
             {
-                return true;
+                return Task.FromResult(true);
             }
         }
 

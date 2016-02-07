@@ -1,7 +1,9 @@
-﻿namespace Pancakes.SanityChecks
+﻿using System.Threading.Tasks;
+
+namespace Pancakes.SanityChecks
 {
     public interface ICheckSanity
     {
-        bool Probe();
+        Task<bool> Probe();
     }
 }
