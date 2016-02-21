@@ -12,6 +12,7 @@
         public static ErrorCode ShieldCaughtNullObject = new CoreErrorCodes(107, "Shield blocked a null object");
         public static ErrorCode IllegalSanityCheck = new CoreErrorCodes(108, "Cannot add a sanity check that doesn't implement ICheckSanity");
         public static ErrorCode InsaneKernel = new CoreErrorCodes(109, "Kernel boot failed sanity checks");
+        public static ErrorCode CannotBootNonSealedConfig = new CoreErrorCodes(110, "Kernel needs a sealed configuration, protected against changes.");
 
         private CoreErrorCodes(int identifier, string description) : base($"CORE{identifier}", description)
         {

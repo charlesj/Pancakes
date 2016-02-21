@@ -1,28 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Pancakes.ErrorCodes;
 using Pancakes.Exceptions;
 using Pancakes.SanityChecks;
 using Pancakes.ServiceLocator;
+using Pancakes.Utility;
 
 namespace Pancakes
 {
     public class BootConfiguration
     {
-        private bool hasBeenBooted;
-        private readonly List<IServiceRegistration> serviceRegistrations;
+        private bool hasBeenSealed;
+        private List<IServiceRegistration> serviceRegistrations;
         private List<Type> sanityChecks;
+        protected readonly AssemblyCollection assemblies;
 
         public BootConfiguration()
         {
-            this.serviceRegistrations = new List<IServiceRegistration>();
-            this.sanityChecks = new List<Type>();
+            this.assemblies = new AssemblyCollection();
         }
+
+        public bool Sealed => hasBeenSealed;
 
         public bool Verbose { get; private set; }
         public Action<string> Output { get; private set; }
 
+        public IReadOnlyList<Assembly> Assemblies => assemblies;
         public IReadOnlyList<IServiceRegistration> ServiceRegistrations => serviceRegistrations;
         public IReadOnlyCollection<Type> SanityChecks => sanityChecks;
 
@@ -31,45 +36,46 @@ namespace Pancakes
             get { return new BootConfiguration(); }
         }
 
-        public void MarkAsBooted()
+
+        public BootConfiguration Seal()
         {
-            this.hasBeenBooted = true;
+            this.serviceRegistrations = this.assemblies
+                        .GetTypesImplementing(typeof (IServiceRegistration))
+                        .Select(t => (IServiceRegistration)Activator.CreateInstance(t))
+                        .ToList();
+
+            this.sanityChecks = this.assemblies.GetTypesImplementing(typeof (ICheckSanity)).ToList();
+
+            this.hasBeenSealed = true;
+            
+            return this;
         }
 
         public BootConfiguration BeVerbose()
         {
-            this.ProtectAgainstConfiguringAfterBoot();
+            this.ProtectAgainstConfiguringAfterSealing();
             this.Verbose = true;
             return this;
         }
 
-        private void ProtectAgainstConfiguringAfterBoot()
-        {
-            if (this.hasBeenBooted)
-                throw new ErrorCodeInvalidOperationException(CoreErrorCodes.CannotConfigurePostBoot);
-        }
-
         public BootConfiguration WithOutput(Action<string> output)
         {
-            ProtectAgainstConfiguringAfterBoot();   
+            ProtectAgainstConfiguringAfterSealing();   
             this.Output = output;
             return this;
         }
 
-        public BootConfiguration WithServices(IServiceRegistration serviceRegistration)
+        public BootConfiguration LoadAssembly(Assembly assembly)
         {
-            ProtectAgainstConfiguringAfterBoot();
-            this.serviceRegistrations.Add(serviceRegistration);
+            ProtectAgainstConfiguringAfterSealing();
+            this.assemblies.Add(assembly);
             return this;
         }
 
-        public BootConfiguration CheckSanityWith(Type check)
+        private void ProtectAgainstConfiguringAfterSealing()
         {
-            ProtectAgainstConfiguringAfterBoot();
-            if(!typeof(ICheckSanity).IsAssignableFrom(check))
-                throw new ErrorCodeInvalidOperationException(CoreErrorCodes.IllegalSanityCheck);
-            this.sanityChecks.Add(check);
-            return this;
+            if (this.hasBeenSealed)
+                throw new ErrorCodeInvalidOperationException(CoreErrorCodes.CannotConfigurePostBoot);
         }
     }
 }

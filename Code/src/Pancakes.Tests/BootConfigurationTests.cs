@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using Pancakes.ErrorCodes;
 using Pancakes.Exceptions;
@@ -33,6 +34,32 @@ namespace Pancakes.Tests
         }
 
         [Fact]
+        public void Sealing_MarksHasBeenSealed()
+        {
+            var config = new BootConfiguration();
+            Assert.False(config.Sealed);
+            config.Seal();
+            Assert.True(config.Sealed);
+        }
+
+        [Fact]
+        public void IntialState()
+        {
+            var config = new BootConfiguration();
+            Assert.NotNull(config.Assemblies);
+            Assert.Null(config.SanityChecks);
+            Assert.Null(config.ServiceRegistrations);
+        }
+
+        [Fact]
+        public void ServiceRegistrations_AvailableAfterSealing()
+        {
+            var config = new BootConfiguration();
+            config.Seal();
+            Assert.NotNull(config.ServiceRegistrations);
+        }
+
+        [Fact]
         public void CannotSetOutput_AfterBooting()
         {
             TestPostBootCheckWithAcion(config => config.WithOutput(str => { }));
@@ -45,52 +72,33 @@ namespace Pancakes.Tests
         }
 
         [Fact]
-        public void CanAddServiceRegistrations()
+        public void CanAddAssembly()
         {
             var config = new BootConfiguration();
 
-            var registration = new TestServiceRegistration();
-            config.WithServices(registration);
+            var assembly = typeof (SanityCheck).GetTypeInfo().Assembly;
+            config.LoadAssembly(assembly);
 
-            Assert.Collection(config.ServiceRegistrations, item => Assert.Same(registration, item));
+            Assert.Collection(config.Assemblies, item => Assert.Same(item, assembly));
         }
 
         [Fact]
-        public void CannotAddServiceRegistrationsPostBoot()
+        public void CannotAddAssembliesPostBoot()
         {
-            TestPostBootCheckWithAcion(config => config.WithServices(new TestServiceRegistration()));
+            var assembly = typeof(SanityCheck).GetTypeInfo().Assembly;
+            TestPostBootCheckWithAcion(config => config.LoadAssembly(assembly));
         }
 
         [Fact]
-        public void CanAddSanityChecks()
+        public void ServicesAreAvailable()
         {
-            var config = new BootConfiguration();
-            var check = typeof (SanityCheck);
-            config.CheckSanityWith(check);
-
-            Assert.Collection(config.SanityChecks, item => Assert.Same(check, item));
-        }
-
-        [Fact]
-        public void CannotAddSanityChecksPostBoot()
-        {
-            TestPostBootCheckWithAcion(config => config.CheckSanityWith(typeof(SanityCheck)));
-        }
-
-        [Fact]
-        public void CannotAddSanityCheck_ThatDoesntImplementICheckSanity()
-        {
-            var config = new BootConfiguration();
-            var exception =
-                Assert.Throws<ErrorCodeInvalidOperationException>(() => config.CheckSanityWith(typeof (string)));
-
-            Assert.Equal(CoreErrorCodes.IllegalSanityCheck, exception.ErrorCode);
+            //Assert.Collection(config.ServiceRegistrations, item => Assert.Same(registration, item));
         }
 
         private void TestPostBootCheckWithAcion(Action<BootConfiguration> action)
         {
             var config = new BootConfiguration();
-            config.MarkAsBooted();
+            config.Seal();
             var exception = Assert.Throws<ErrorCodeInvalidOperationException>(() => action(config)); 
             Assert.Equal(CoreErrorCodes.CannotConfigurePostBoot, exception.ErrorCode);
         }

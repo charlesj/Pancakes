@@ -10,9 +10,7 @@ namespace Example.Console
         {
             var bootConfig = BootConfiguration.DefaultConfiguration
                 .BeVerbose()
-                .WithOutput(System.Console.WriteLine)
-                .CheckSanityWith(typeof (InternetAccessSanityCheck))
-                .CheckSanityWith(typeof (SimpleInjectorSanityCheck));
+                .WithOutput(System.Console.WriteLine);
 
             var kernel = new Kernel();
             kernel.Boot(bootConfig);

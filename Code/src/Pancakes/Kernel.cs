@@ -22,6 +22,9 @@ namespace Pancakes
 
         public void Boot(BootConfiguration configuration)
         {
+            if(!configuration.Sealed)
+                throw new BootException(CoreErrorCodes.CannotBootNonSealedConfig);
+            
             this.BootConfiguration = configuration;
             this.bootlog = new BootLog(new Clock());
             if(BootConfiguration.Verbose)
@@ -30,7 +33,6 @@ namespace Pancakes
             this.bootlog.Info("Kernel", "Booting...");
             this.SetupServiceLocator(configuration.ServiceRegistrations, bootlog);
             this.CheckSanity(ServiceLocator, configuration.SanityChecks.ToArray(), bootlog).GetAwaiter().GetResult();
-            configuration.MarkAsBooted();
             this.bootlog.Info("Kernel", "Done");
         }
 
