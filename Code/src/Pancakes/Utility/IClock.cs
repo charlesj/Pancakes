@@ -6,12 +6,4 @@ namespace Pancakes.Utility
     {
         DateTimeOffset Now();
     }
-
-    public class Clock : IClock
-    {
-        public DateTimeOffset Now()
-        {
-            return DateTime.UtcNow;
-        }
-    }
 }
