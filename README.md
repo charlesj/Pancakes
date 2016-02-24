@@ -12,3 +12,5 @@ Pancakes brings together well known .NET libraries into a cogent stack that can 
 * **NLog** - Logging
 
 For full documentation, see the documentation folder in the repository.
+
+This is a test.
