@@ -5,16 +5,16 @@ namespace Pancakes.ServiceLocator
 {
     public class SimpleInjectorServiceLocator : IServiceLocator
     {
-        private Container container;
+        public Container Container { get; private set; }
 
         public object GetService(Type type)
         {
-            return this.container.GetInstance(type);
+            return Container.GetInstance(type);
         }
 
         public TServiceType GetService<TServiceType>() where TServiceType : class
         {
-            return this.container.GetInstance<TServiceType>();
+            return Container.GetInstance<TServiceType>();
         }
 
         public void RegisterServices(IServiceRegistration[] registrations)
@@ -24,14 +24,14 @@ namespace Pancakes.ServiceLocator
 
         internal void RegisterServices(IServiceRegistration[] registrations, BootLog log)
         {
-            this.container = new Container();
+            Container = new Container();
             foreach (var registration in registrations)
             {
                 log?.Info("ServiceLocator", $"Loading Services {registration.GetType().Name}");
-                registration.RegisterServices(container);
+                registration.RegisterServices(Container);
             }
 
-            container.Register<IServiceLocator>(() => this, Lifestyle.Singleton);
+            Container.Register<IServiceLocator>(() => this, Lifestyle.Singleton);
         }
     }
 }

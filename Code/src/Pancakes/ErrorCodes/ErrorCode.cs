@@ -2,14 +2,19 @@
 {
     public class ErrorCode
     {
-        public string Identifier { get; private set; }
+        public string Identifier { get; }
 
-        public string Description { get; private set; }
+        public string Description { get; }
 
         public ErrorCode(string identifier, string description)
         {
-            this.Identifier = identifier;
-            this.Description = description;
+            Identifier = identifier;
+            Description = description;
+        }
+
+        public override string ToString()
+        {
+            return $"{Identifier}: {Description}";
         }
     }
 }

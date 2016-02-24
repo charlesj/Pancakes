@@ -10,6 +10,8 @@
         public static ErrorCode InvalidCommandLocationString = new CoreErrorCodes(105, "Attempted to locate a command with an empty string.");
         public static ErrorCode ShieldCaughtBadString = new CoreErrorCodes(106, "Shield blocked a bad string");
         public static ErrorCode ShieldCaughtNullObject = new CoreErrorCodes(107, "Shield blocked a null object");
+        public static ErrorCode IllegalSanityCheck = new CoreErrorCodes(108, "Cannot add a sanity check that doesn't implement ICheckSanity");
+        public static ErrorCode InsaneKernel = new CoreErrorCodes(109, "Kernel boot failed sanity checks");
 
         private CoreErrorCodes(int identifier, string description) : base($"CORE{identifier}", description)
         {

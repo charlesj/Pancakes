@@ -52,21 +52,21 @@ namespace Pancakes.Tests.TestUtilitiesTests
             }
         }
 
-        public class GetMock
+        public class GetMocked
         {
             [Fact]
             public void CanGetInstance()
             {
                 var sut = new BaseUnitTest<TypeWithInterfaceDependencies>();
-                var bar = sut.GetMock<IBarService>();
+                var bar = sut.GetMocked<IBarService>();
             }
 
             [Fact]
             public void Instances_AreSingletons()
             {
                 var sut = new BaseUnitTest<TypeWithInterfaceDependencies>();
-                var first = sut.GetMock<IBarService>();
-                var second = sut.GetMock<IBarService>();
+                var first = sut.GetMocked<IBarService>();
+                var second = sut.GetMocked<IBarService>();
                 Assert.Equal(first, second);
             }
 
@@ -74,19 +74,19 @@ namespace Pancakes.Tests.TestUtilitiesTests
             public void Instances_AreSameAsSystemUnderTest()
             {
                 var sut = new BaseUnitTest<TypeWithInterfaceDependencies>();
-                var first = sut.GetMock<IFooService>();
+                var first = sut.GetMocked<IFooService>();
                 var second = sut.Build().FooService;
                 Assert.Equal(first, second);
             }
         }
 
-        public class Setup
+        public class Mock
         {
             [Fact]
             public void CanGet_TheMock()
             {
                 var sut = new BaseUnitTest<TypeWithInterfaceDependencies>();
-                var mock = sut.Setup<IFooService>();
+                var mock = sut.Mock<IFooService>();
                 Assert.NotNull(mock);
             }
 
@@ -98,7 +98,7 @@ namespace Pancakes.Tests.TestUtilitiesTests
 
                 var initial = testObject.FooService.Name();
 
-                var mock = sut.Setup<IFooService>();
+                var mock = sut.Mock<IFooService>();
                 var expected = "hello";
                 mock.Setup(foo => foo.Name()).Returns(expected);
 

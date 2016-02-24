@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Pancakes.ErrorCodes;
 using Pancakes.Exceptions;
+using Pancakes.SanityChecks;
 using Pancakes.ServiceLocator;
 using SimpleInjector;
 using Xunit;
@@ -31,18 +33,15 @@ namespace Pancakes.Tests
         }
 
         [Fact]
+        public void CannotSetOutput_AfterBooting()
+        {
+            TestPostBootCheckWithAcion(config => config.WithOutput(str => { }));
+        }
+
+        [Fact]
         public void CannotConfigureAfterMarkingAsBooted()
         {
-            var config = new BootConfiguration();
-            config.MarkAsBooted();
-            try
-            {
-                config.BeVerbose();
-            }
-            catch (ErrorCodeInvalidOperationException exception)
-            {
-                Assert.Equal(CoreErrorCodes.CannotConfigurePostBoot, exception.ErrorCode);
-            }
+            TestPostBootCheckWithAcion(config => config.BeVerbose());
         }
 
         [Fact]
@@ -53,7 +52,55 @@ namespace Pancakes.Tests
             var registration = new TestServiceRegistration();
             config.WithServices(registration);
 
-            Assert.Collection(config.ServiceRegistrations, item => Assert.Equal(registration, item));
+            Assert.Collection(config.ServiceRegistrations, item => Assert.Same(registration, item));
+        }
+
+        [Fact]
+        public void CannotAddServiceRegistrationsPostBoot()
+        {
+            TestPostBootCheckWithAcion(config => config.WithServices(new TestServiceRegistration()));
+        }
+
+        [Fact]
+        public void CanAddSanityChecks()
+        {
+            var config = new BootConfiguration();
+            var check = typeof (SanityCheck);
+            config.CheckSanityWith(check);
+
+            Assert.Collection(config.SanityChecks, item => Assert.Same(check, item));
+        }
+
+        [Fact]
+        public void CannotAddSanityChecksPostBoot()
+        {
+            TestPostBootCheckWithAcion(config => config.CheckSanityWith(typeof(SanityCheck)));
+        }
+
+        [Fact]
+        public void CannotAddSanityCheck_ThatDoesntImplementICheckSanity()
+        {
+            var config = new BootConfiguration();
+            var exception =
+                Assert.Throws<ErrorCodeInvalidOperationException>(() => config.CheckSanityWith(typeof (string)));
+
+            Assert.Equal(CoreErrorCodes.IllegalSanityCheck, exception.ErrorCode);
+        }
+
+        private void TestPostBootCheckWithAcion(Action<BootConfiguration> action)
+        {
+            var config = new BootConfiguration();
+            config.MarkAsBooted();
+            var exception = Assert.Throws<ErrorCodeInvalidOperationException>(() => action(config)); 
+            Assert.Equal(CoreErrorCodes.CannotConfigurePostBoot, exception.ErrorCode);
+        }
+
+        public class SanityCheck : ICheckSanity
+        {
+            public Task<bool> Probe()
+            {
+                return Task.FromResult(true);
+            }
         }
 
         public class TestServiceRegistration : IServiceRegistration
