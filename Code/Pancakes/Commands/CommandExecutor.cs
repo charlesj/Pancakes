@@ -6,12 +6,12 @@ namespace Pancakes.Commands
     {
         public async Task<CommandResult> ExecuteAsync(ICommand command)
         {
-            if (!command.Validate())
+            if (!await command.ValidateAsync())
                 return new CommandResult {ResultType = CommandResultType.Invalid};
-            if (!command.Authorize())
+            if (!await command.AuthorizeAsync())
                 return new CommandResult() {ResultType = CommandResultType.Unauthorized};
 
-            command.Execute();
+            await command.ExecuteAsync();
 
             return new CommandResult() {ResultType = CommandResultType.Success};
         }

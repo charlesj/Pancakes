@@ -1,4 +1,5 @@
-﻿using Pancakes.Commands;
+﻿using System.Threading.Tasks;
+using Pancakes.Commands;
 using Pancakes.ErrorCodes;
 using Pancakes.Exceptions;
 using Pancakes.Tests.TestUtilities;
@@ -96,17 +97,17 @@ namespace Pancakes.Tests.CommandTests
 
         public class TestCommand : ICommand
         {
-            public bool Authorize()
+            public Task<bool> AuthorizeAsync()
             {
                 throw new System.NotImplementedException();
             }
 
-            public bool Validate()
+            public Task<bool> ValidateAsync()
             {
                 throw new System.NotImplementedException();
             }
 
-            public void Execute()
+            public Task ExecuteAsync()
             {
                 throw new System.NotImplementedException();
             }

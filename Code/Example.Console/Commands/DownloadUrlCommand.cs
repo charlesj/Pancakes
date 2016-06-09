@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Threading.Tasks;
 using Pancakes.Commands;
 
 namespace Example.Console.Commands
@@ -7,17 +8,18 @@ namespace Example.Console.Commands
     {
         public string Url { get; set; }
 
-        public bool Authorize()
+        public Task<bool> AuthorizeAsync()
         {
-            return true;
+            return Task.FromResult(true);
         }
 
-        public bool Validate()
+        public Task<bool> ValidateAsync()
         {
-            return !string.IsNullOrWhiteSpace(this.Url);
+            var validation = !string.IsNullOrWhiteSpace(this.Url);
+            return Task.FromResult(validation);
         }
 
-        public async void Execute()
+        public async Task ExecuteAsync()
         {
             using (var client = new HttpClient())
             {

@@ -1,9 +1,11 @@
-﻿namespace Pancakes.Commands
+﻿using System.Threading.Tasks;
+
+namespace Pancakes.Commands
 {
     public interface ICommand
     {
-        bool Authorize();
-        bool Validate();
-        void Execute();
+        Task<bool> AuthorizeAsync();
+        Task<bool> ValidateAsync();
+        Task ExecuteAsync();
     }
 }

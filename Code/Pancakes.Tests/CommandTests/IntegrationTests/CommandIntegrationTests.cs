@@ -1,6 +1,7 @@
 ﻿using Pancakes.Commands;
 using Pancakes.ServiceLocator;
 using SimpleInjector;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Pancakes.Tests.CommandTests.IntegrationTest
@@ -41,22 +42,23 @@ namespace Pancakes.Tests.CommandTests.IntegrationTest
             }
         }
 
-        public class TestCommand :ICommand
+        public class TestCommand : ICommand
         {
             public string Name { get; set; }
 
-            public bool Authorize()
+            public Task<bool> AuthorizeAsync()
             {
-                return true;
+                return Task.FromResult(true);
             }
 
-            public bool Validate()
+            public Task<bool> ValidateAsync()
             {
-                return true;
+                return Task.FromResult(true);
             }
 
-            public void Execute()
+            public Task ExecuteAsync()
             {
+                return Task.FromResult(0);
             }
         }
     }

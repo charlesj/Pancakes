@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Pancakes.Commands;
 using Pancakes.Tests.TestUtilities;
 using Xunit;
@@ -31,19 +32,19 @@ namespace Pancakes.Tests.CommandTests
             public string Name { get; set; }
             public DateTime DateCreated { get; set; }
 
-            public bool Authorize()
+            public Task<bool> AuthorizeAsync()
             {
-                return true;
+                return Task.FromResult(true);
             }
 
-            public bool Validate()
+            public Task<bool> ValidateAsync()
             {
-                return false;
+                return Task.FromResult(false);
             }
 
-            public void Execute()
+            public Task ExecuteAsync()
             {
-                // no op
+                return Task.FromResult(0);
             }
         }
     }
