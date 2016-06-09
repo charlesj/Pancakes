@@ -7,6 +7,7 @@ using Pancakes.SanityChecks;
 using Pancakes.ServiceLocator;
 using SimpleInjector;
 using Xunit;
+using System.Linq;
 
 namespace Pancakes.Tests
 {
@@ -72,6 +73,38 @@ namespace Pancakes.Tests
         }
 
         [Fact]
+        public void ContainsEntryPointAssembly_ByDefault()
+        {
+            var config = new BootConfiguration();
+            config.Seal();
+            Assert.Collection(config.Assemblies, 
+                item => Assert.True(item.FullName.StartsWith("dotnet-test-xunit")),
+                item => Assert.NotNull(item)); // we don't care about this item for this test.
+        }
+
+        [Fact]
+        public void DoesNotContainEntryPointAssembly_WhenSuppressed()
+        {
+            var config = new BootConfiguration();
+            config.SuppressLoadingEntryPointAssembly().Seal();
+            Assert.False(config.Assemblies.Any(ass => ass.FullName.StartsWith("dotnet-test-xunit")));
+        }
+
+        [Fact]
+        public void ContainsPancakesAssembly_ByDefault()
+        {
+            var config = new BootConfiguration();
+            config.Seal();
+            Assert.Collection(config.Assemblies, item => Assert.NotNull(item), item => Assert.True(item.FullName.StartsWith("Pancakes")));
+        }
+
+        [Fact]
+        public void CannotSuppressEntryPointAssemblyAfterSeal()
+        {
+            TestPostBootCheckWithAcion(config => config.SuppressLoadingEntryPointAssembly());
+        }
+
+        [Fact]
         public void CanAddAssembly()
         {
             var config = new BootConfiguration();
@@ -90,9 +123,22 @@ namespace Pancakes.Tests
         }
 
         [Fact]
-        public void ServicesAreAvailable()
+        public void PostSealing_ContainsValidServiceRegistrations()
         {
-            //Assert.Collection(config.ServiceRegistrations, item => Assert.Same(registration, item));
+            var config = new BootConfiguration();
+            config.LoadAssembly(typeof (TestServiceRegistration).GetTypeInfo().Assembly);
+            config.Seal();
+
+            Assert.True(config.ServiceRegistrations.Any(sr => sr.GetType() == typeof(TestServiceRegistration)));
+        }
+
+        [Fact]
+        public void WillNotReaddAssemblies_AtSeal_WhenAlreadyAdded()
+        {
+            var config = new BootConfiguration();
+            config.LoadAssembly(typeof(BootConfiguration).GetTypeInfo().Assembly);
+            config.Seal();
+            Assert.True(config.Assemblies.Count() == 2);
         }
 
         private void TestPostBootCheckWithAcion(Action<BootConfiguration> action)

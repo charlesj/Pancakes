@@ -15,6 +15,7 @@ namespace Pancakes
         private bool hasBeenSealed;
         private List<IServiceRegistration> serviceRegistrations;
         private List<Type> sanityChecks;
+        private bool suppressLoadingEntryPointAssembly;
         protected readonly AssemblyCollection assemblies;
 
         public BootConfiguration()
@@ -39,6 +40,15 @@ namespace Pancakes
 
         public BootConfiguration Seal()
         {
+            var entryAssembly = Assembly.GetEntryAssembly();
+            if (!this.suppressLoadingEntryPointAssembly &&
+                !this.assemblies.Contains(entryAssembly))
+                this.assemblies.Add(entryAssembly);
+
+            var pancakesAssembly = typeof (BootConfiguration).GetTypeInfo().Assembly;
+            if (!this.assemblies.Contains(pancakesAssembly))
+                this.assemblies.Add(pancakesAssembly);
+
             this.serviceRegistrations = this.assemblies
                         .GetTypesImplementing(typeof (IServiceRegistration))
                         .Select(t => (IServiceRegistration)Activator.CreateInstance(t))
@@ -69,6 +79,13 @@ namespace Pancakes
         {
             ProtectAgainstConfiguringAfterSealing();
             this.assemblies.Add(assembly);
+            return this;
+        }
+
+        public BootConfiguration SuppressLoadingEntryPointAssembly()
+        {
+            ProtectAgainstConfiguringAfterSealing();
+            this.suppressLoadingEntryPointAssembly = true;
             return this;
         }
 
