@@ -1,5 +1,4 @@
-﻿using Moq;
-using Pancakes.Tests.TestUtilities;
+﻿using Pancakes.Tests.TestUtilities;
 using Xunit;
 
 namespace Pancakes.Tests.TestUtilitiesTests

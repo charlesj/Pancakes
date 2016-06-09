@@ -10,7 +10,8 @@ namespace Example.Console
         {
             var bootConfig = BootConfiguration.DefaultConfiguration
                 .BeVerbose()
-                .WithOutput(System.Console.WriteLine);
+                .WithOutput(System.Console.WriteLine)
+                .Seal();
 
             var kernel = new Kernel();
             kernel.Boot(bootConfig);
