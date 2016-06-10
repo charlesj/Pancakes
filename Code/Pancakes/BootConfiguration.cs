@@ -20,9 +20,12 @@ namespace Pancakes
         private bool suppressLoadingEntryPointAssembly;
         protected readonly AssemblyCollection assemblies;
 
-        public BootConfiguration()
+        public BootConfiguration(AssemblyCollection assemblies = null)
         {
-            this.assemblies = new AssemblyCollection();
+            if(assemblies == null)
+                this.assemblies = new AssemblyCollection();
+            else
+                this.assemblies = assemblies;
         }
 
         public bool Sealed => hasBeenSealed;

@@ -7,7 +7,7 @@ namespace Pancakes.Utility
 {
     public class AssemblyCollection : List<Assembly>
     {
-        public IEnumerable<Type> GetTypesImplementing(Type type)
+        public virtual IEnumerable<Type> GetTypesImplementing(Type type)
         {
             return this.SelectMany(ass => ass.ExportedTypes)
                 .Where(t => type != t)
