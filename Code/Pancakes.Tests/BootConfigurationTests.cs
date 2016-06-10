@@ -50,6 +50,7 @@ namespace Pancakes.Tests
             Assert.NotNull(config.Assemblies);
             Assert.Null(config.SanityChecks);
             Assert.Null(config.ServiceRegistrations);
+            Assert.Null(config.Commands);
         }
 
         [Fact]
@@ -133,6 +134,27 @@ namespace Pancakes.Tests
         }
 
         [Fact]
+        public void PostSealing_ContainsValidSanityChecks()
+        {
+            var config = new BootConfiguration();
+            config.LoadAssembly(typeof (SanityCheck).GetTypeInfo().Assembly);
+            config.Seal();
+
+            Assert.True(config.SanityChecks.Any(s => s == typeof(SanityCheck)));
+        }
+
+        [Fact]
+        public void PostSealing_ContainsValidCommands()
+        {
+            var config = new BootConfiguration();
+            config.LoadAssembly(typeof (TestCommand).GetTypeInfo().Assembly);
+            config.Seal();
+
+            Assert.True(config.Commands.Any(s => s == typeof(TestCommand)));
+        }
+
+
+        [Fact]
         public void WillNotReaddAssemblies_AtSeal_WhenAlreadyAdded()
         {
             var config = new BootConfiguration();
@@ -161,6 +183,24 @@ namespace Pancakes.Tests
         {
             public void RegisterServices(Container container)
             {
+            }
+        }
+
+        public class TestCommand : Commands.ICommand
+        {
+            public Task<bool> AuthorizeAsync()
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task ExecuteAsync()
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<bool> ValidateAsync()
+            {
+                throw new NotImplementedException();
             }
         }
     }

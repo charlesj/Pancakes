@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Pancakes.Commands;
 using Pancakes.ErrorCodes;
 using Pancakes.Exceptions;
 using Pancakes.SanityChecks;
@@ -15,6 +16,7 @@ namespace Pancakes
         private bool hasBeenSealed;
         private List<IServiceRegistration> serviceRegistrations;
         private List<Type> sanityChecks;
+        private List<Type> commands;
         private bool suppressLoadingEntryPointAssembly;
         protected readonly AssemblyCollection assemblies;
 
@@ -31,6 +33,7 @@ namespace Pancakes
         public IReadOnlyList<Assembly> Assemblies => assemblies;
         public IReadOnlyList<IServiceRegistration> ServiceRegistrations => serviceRegistrations;
         public IReadOnlyCollection<Type> SanityChecks => sanityChecks;
+        public IReadOnlyCollection<Type> Commands => commands;
 
         public static BootConfiguration DefaultConfiguration
         {
@@ -55,6 +58,8 @@ namespace Pancakes
                         .ToList();
 
             this.sanityChecks = this.assemblies.GetTypesImplementing(typeof (ICheckSanity)).ToList();
+
+            this.commands = this.assemblies.GetTypesImplementing(typeof(ICommand)).ToList();
 
             this.hasBeenSealed = true;
             
