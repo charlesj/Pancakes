@@ -35,8 +35,8 @@ namespace Pancakes
 
         public IReadOnlyList<Assembly> Assemblies => assemblies;
         public IReadOnlyList<IServiceRegistration> ServiceRegistrations => serviceRegistrations;
-        public IReadOnlyCollection<Type> SanityChecks => sanityChecks;
-        public IReadOnlyCollection<Type> Commands => commands;
+        public IReadOnlyList<Type> SanityChecks => sanityChecks;
+        public IReadOnlyList<Type> Commands => commands;
 
         public static BootConfiguration DefaultConfiguration
         {

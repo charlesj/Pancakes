@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Pancakes.Commands;
 using Pancakes.ErrorCodes;
 using Pancakes.Exceptions;
 using Pancakes.SanityChecks;
@@ -32,8 +33,22 @@ namespace Pancakes
 
             this.bootlog.Info("Kernel", "Booting...");
             this.SetupServiceLocator(configuration.ServiceRegistrations, bootlog);
+            this.RegisterCommands(configuration.Commands);
             this.CheckSanity(ServiceLocator, configuration.SanityChecks.ToArray(), bootlog).GetAwaiter().GetResult();
             this.bootlog.Info("Kernel", "Done");
+        }
+
+        private void RegisterCommands(IReadOnlyList<Type> commands)
+        {
+            this.bootlog.Info(Constants.BootComponents.Commands, "Registering Commands");
+            var registry = this.ServiceLocator.GetService<ICommandRegistry>();
+            foreach(var command in commands)
+            {
+                this.bootlog.Info(Constants.BootComponents.Commands, $"Registering {command.Name}");
+                registry.Register(command);
+            }
+
+            this.bootlog.Info(Constants.BootComponents.Commands, "Registered all known commands");
         }
 
         private void SetupServiceLocator(IReadOnlyList<IServiceRegistration> registrations, BootLog log)
@@ -47,12 +62,12 @@ namespace Pancakes
 
         private async Task CheckSanity(IServiceLocator serviceLocator, Type[] sanityCheckTypes, BootLog log)
         {
-            bootlog.Info(Constants.BootComponents.SanityChecks, "Starting Sanity Checks");
+            this.bootlog.Info(Constants.BootComponents.SanityChecks, "Starting Sanity Checks");
             var processor = serviceLocator.GetService<SanityCheckProcessor>();
             var sanity = await processor.Check(sanityCheckTypes, log);
             if(sanity.Any(kvp => kvp.Value == false))
                 throw new BootException(CoreErrorCodes.InsaneKernel);
-            bootlog.Info(Constants.BootComponents.SanityChecks, "Completed Sanity Checks");
+            this.bootlog.Info(Constants.BootComponents.SanityChecks, "Completed Sanity Checks");
         }
     }
 }

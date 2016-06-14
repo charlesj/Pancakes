@@ -6,6 +6,7 @@
         {
             public const string ServiceLocator = "ServiceLocator";
             public const string SanityChecks = "SanityChecks";
+            public const string Commands = "Commands";
         }
     }
 }
