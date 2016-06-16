@@ -42,9 +42,9 @@ namespace Pancakes.Tests.CommandTests
                 return Task.FromResult(false);
             }
 
-            public Task ExecuteAsync()
+            public Task<object> ExecuteAsync()
             {
-                return Task.FromResult(0);
+                return Task.FromResult(new object());
             }
         }
     }

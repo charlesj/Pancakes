@@ -6,6 +6,6 @@ namespace Pancakes.Commands
     {
         Task<bool> AuthorizeAsync();
         Task<bool> ValidateAsync();
-        Task ExecuteAsync();
+        Task<object> ExecuteAsync();
     }
 }

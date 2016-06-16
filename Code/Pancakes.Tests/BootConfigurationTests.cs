@@ -193,9 +193,9 @@ namespace Pancakes.Tests
                 throw new NotImplementedException();
             }
 
-            public Task ExecuteAsync()
+            public Task<object> ExecuteAsync()
             {
-                throw new NotImplementedException();
+                return Task.FromResult(new object());
             }
 
             public Task<bool> ValidateAsync()

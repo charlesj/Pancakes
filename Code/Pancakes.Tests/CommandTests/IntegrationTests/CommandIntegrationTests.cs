@@ -56,9 +56,9 @@ namespace Pancakes.Tests.CommandTests.IntegrationTest
                 return Task.FromResult(true);
             }
 
-            public Task ExecuteAsync()
+            public Task<object> ExecuteAsync()
             {
-                return Task.FromResult(0);
+                return Task.FromResult(new object());
             }
         }
     }

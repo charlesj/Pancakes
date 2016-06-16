@@ -124,9 +124,9 @@ namespace Pancakes.Tests.CommandTests
                 throw new System.NotImplementedException();
             }
 
-            public Task ExecuteAsync()
+            public Task<object> ExecuteAsync()
             {
-                throw new System.NotImplementedException();
+                return Task.FromResult(new object());
             }
         }
     }
