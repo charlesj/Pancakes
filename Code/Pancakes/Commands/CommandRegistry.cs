@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reflection;
 using Pancakes.ErrorCodes;
 using Pancakes.Exceptions;
@@ -38,6 +39,11 @@ namespace Pancakes.Commands
         public string BuildCommandName(Type commandType)
         {
             return commandType.Name.Replace("Command", string.Empty).ToLowerInvariant();
+        }
+
+        public IReadOnlyDictionary<string, Type> GetAllRegisteredCommands()
+        {
+            return new ReadOnlyDictionary<string, Type>(this.internalRegistry);
         }
     }
 }

@@ -95,6 +95,23 @@ namespace Pancakes.Tests.CommandTests
             }
         }
 
+        public class GetAllRegisteredCommands : CommandRegistryTests
+        {
+            [Fact]
+            public void ReturnsOnlyRegisteredCommands()
+            {
+                this.SystemUnderTest.Register(typeof(TestCommand));
+
+                var commands = this.SystemUnderTest.GetAllRegisteredCommands();
+
+                Assert.Collection(commands, 
+                item => {
+                    Assert.Equal("test", item.Key);
+                    Assert.Equal(typeof(TestCommand), item.Value);
+                });
+            }
+        }
+
         public class TestCommand : ICommand
         {
             public Task<bool> AuthorizeAsync()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Pancakes.Commands
 {
@@ -8,5 +9,6 @@ namespace Pancakes.Commands
         bool IsRegistered(string commandName);
         Type GetRegisteredType(string commandName);
         string BuildCommandName(Type commandType);
+        IReadOnlyDictionary<string, Type> GetAllRegisteredCommands();
     }
 }
